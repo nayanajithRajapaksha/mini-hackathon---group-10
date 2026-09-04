@@ -7,7 +7,7 @@ function Footer() {
           <img src="/Parking_Pulse.png" alt="ParkingPulse LK" className="footer-logo" />
           <span className="footer-brand">ParkingPulse LK</span>
         </div>
-        <p className="footer-course">SE3090 Mini Hackathon &bull; Smart Parking for Kandy</p>
+        <p className="footer-course">Smart Parking for Kandy</p>
       </div>
     </footer>
   );

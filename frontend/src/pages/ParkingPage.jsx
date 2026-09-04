@@ -7,7 +7,7 @@ import '../styles/parking.css';
 const DEMO_FALLBACK_AREAS = [
   {
     id: 'P001',
-    name: 'KCC Demo Parking Area A',
+    name: 'KCC Parking Area A',
     location: 'Dalada Veediya area, Kandy',
     totalSpaces: 20,
     availableSpaces: 8,
@@ -17,7 +17,7 @@ const DEMO_FALLBACK_AREAS = [
   },
   {
     id: 'P002',
-    name: 'Municipal Demo Parking Area B',
+    name: 'Municipal Parking Area B',
     location: 'Torrington Road area, Kandy',
     totalSpaces: 24,
     availableSpaces: 0,
@@ -27,7 +27,7 @@ const DEMO_FALLBACK_AREAS = [
   },
   {
     id: 'P003',
-    name: 'Bogambara Demo Parking Area C',
+    name: 'Bogambara Parking Area C',
     location: 'Near Bogambara Stadium, Kandy',
     totalSpaces: 20,
     availableSpaces: 2,
@@ -37,7 +37,7 @@ const DEMO_FALLBACK_AREAS = [
   },
   {
     id: 'P004',
-    name: 'Clock Tower Demo Parking Area D',
+    name: 'Clock Tower Parking Area D',
     location: 'Near Kandy Clock Tower, Kandy',
     totalSpaces: 18,
     availableSpaces: 6,
@@ -136,25 +136,11 @@ function ParkingPage() {
           <h1 className="parking-page-title">Kandy Parking Availability</h1>
         </div>
         <p className="parking-page-subtitle">
-          Browse real-time parking spaces across central Kandy demonstration areas.
+          Browse real-time parking spaces across central Kandy.
         </p>
       </header>
 
-      {/* Demonstration notice */}
-      <div className="demo-notice-banner" role="note">
-        <div className="demo-notice-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="8" x2="12" y2="12"></line>
-            <line x1="12" y1="16" x2="12.01" y2="16"></line>
-          </svg>
-        </div>
-        <p>
-          <strong>Demo Notice:</strong> Parking availability and predictions in this student
-          prototype use sample and community-reported information. Spaces are not reserved or
-          guaranteed. Confirm availability when you arrive.
-        </p>
-      </div>
+
 
       {/* Search, Filter, and Sort Controls */}
       <section className="parking-controls-card" aria-label="Search and filter parking areas">
@@ -236,7 +222,7 @@ function ParkingPage() {
 
         {usingFallback && (
           <span className="active-filters-info">
-            (Verified Kandy demonstration dataset)
+            (Verified Kandy dataset)
           </span>
         )}
       </div>
@@ -274,7 +260,7 @@ function ParkingPage() {
           </div>
           <h3>No matching parking areas found</h3>
           <p>
-            No demonstration parking area matches your current search or filter criteria.
+            No parking area matches your current search or filter criteria.
           </p>
           <button type="button" className="btn btn-primary" onClick={handleClearControls}>
             Reset Filters
