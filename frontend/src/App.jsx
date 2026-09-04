@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import WorkerDashboard from './pages/WorkerDashboard.jsx';
+import RoleHome from './components/RoleHome.jsx';
 
 function App() {
   return (
@@ -20,20 +21,21 @@ function App() {
         {/* Main content area with route switching */}
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+            <Route path="/" element={<RoleHome />} />
+            <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
             <Route path="/parking" element={<ProtectedRoute><ParkingPage /></ProtectedRoute>} />
             
             {/* Auth Routes */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
-            <Route path="/worker" element={<ProtectedRoute allowedRoles={['worker', 'admin']}><WorkerDashboard /></ProtectedRoute>} />
+            <Route path="/worker" element={<ProtectedRoute allowedRoles={['worker']}><WorkerDashboard /></ProtectedRoute>} />
 
             {/* Protected Route for Reporting - Only for Admin & Worker */}
             <Route 
               path="/report" 
               element={
-                <ProtectedRoute allowedRoles={['admin', 'worker']}>
+                <ProtectedRoute allowedRoles={['worker']}>
                   <WorkerDashboard />
                 </ProtectedRoute>
               } 

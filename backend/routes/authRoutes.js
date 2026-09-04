@@ -22,6 +22,11 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ status: 'error', message: 'Please add all fields' });
     }
 
+    const reservedAdminEmail = (process.env.ADMIN_EMAIL || 'admin@parkingpulse.lk').toLowerCase();
+    if (email.trim().toLowerCase() === reservedAdminEmail) {
+      return res.status(403).json({ status: 'error', message: 'This email is reserved for the system administrator' });
+    }
+
     // Check if user exists
     const userExists = await User.findOne({ email });
 

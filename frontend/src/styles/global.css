@@ -98,6 +98,9 @@ body {
 
 .navbar-auth { margin-left:auto; }
 .user-menu,.guest-menu { display:flex; align-items:center; gap:.6rem; }
+.role-pill { display:inline-block; margin-left:.35rem; padding:.08rem .45rem; border-radius:999px; text-transform:uppercase; font-size:.68rem; font-weight:800; letter-spacing:.04em; background:rgba(255,255,255,.18); }
+.role-admin { background:#f6a623; color:#1a2e5a; }
+.role-worker { background:#0e918c; color:#fff; }
 
 .nav-link {
   display: inline-block;

@@ -10,7 +10,7 @@ const { protect, authorizeRoles } = require('../middleware/authMiddleware');
 router.get('/parking-areas', protect, async (req, res) => {
   try {
     const query = req.user.role === 'worker' ? { assignedWorkers: req.user._id } : {};
-    const areas = await ParkingArea.find(query).populate('assignedWorkers', 'email role').sort({ name: 1 });
+    const areas = await ParkingArea.find(query).populate('assignedWorkers', 'name email role').sort({ name: 1 });
     res.json({
       status: 'success',
       data: areas
@@ -111,7 +111,7 @@ router.get('/parking-updates', protect, authorizeRoles('worker', 'admin'), async
     const query = req.user.role === 'admin' ? {} : { reportedBy: req.user._id };
     const updates = await ParkingUpdate.find(query)
       .populate('areaId', 'name location totalSpaces')
-      .populate('reportedBy', 'email role')
+      .populate('reportedBy', 'name email role')
       .sort({ observationTime: -1 });
     res.json({ status: 'success', data: updates });
   } catch (error) {

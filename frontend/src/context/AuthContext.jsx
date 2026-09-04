@@ -11,7 +11,21 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       try {
-        setUser(JSON.parse(storedUser));
+        const parsedUser = JSON.parse(storedUser);
+        fetch('/api/auth/me', { headers: { Authorization: `Bearer ${parsedUser.token}` } })
+          .then(async (response) => {
+            if (!response.ok) throw new Error('Session expired');
+            const body = await response.json();
+            const refreshedUser = { ...body.data, token: parsedUser.token };
+            setUser(refreshedUser);
+            localStorage.setItem('user', JSON.stringify(refreshedUser));
+          })
+          .catch(() => {
+            localStorage.removeItem('user');
+            setUser(null);
+          })
+          .finally(() => setLoading(false));
+        return;
       } catch {
         localStorage.removeItem('user');
       }
