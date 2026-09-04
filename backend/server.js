@@ -1,6 +1,10 @@
+// Load environment variables before database connection
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
+const mongoose = require('mongoose');
+const connectDB = require('./config/db');
 
 // Create Express app
 const app = express();
@@ -12,9 +16,11 @@ app.use(express.json());
 
 // Health check route
 app.get('/api/health', (req, res) => {
+  const isConnected = mongoose.connection.readyState === 1;
   res.json({
     status: 'ok',
     message: 'ParkingPulse LK API is running',
+    database: isConnected ? 'connected' : 'disconnected',
   });
 });
 
@@ -26,7 +32,17 @@ app.use('/api/*path', (req, res) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`ParkingPulse LK server running on port ${PORT}`);
-});
+// Start server only after database connection succeeds
+const startServer = async () => {
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`ParkingPulse LK server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Server startup failed:', error.message);
+    process.exit(1);
+  }
+};
+
+startServer();
