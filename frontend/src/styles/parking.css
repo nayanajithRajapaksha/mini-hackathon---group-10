@@ -1,0 +1,496 @@
+/* ===================================================
+   ParkingPulse LK - Parking Availability Page Styles
+   =================================================== */
+
+.parking-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Page Header */
+.parking-page-header {
+  text-align: left;
+}
+
+.parking-page-title {
+  font-size: 1.85rem;
+  color: #1a2e5a;
+  margin-bottom: 0.35rem;
+  font-weight: 700;
+}
+
+.parking-page-subtitle {
+  color: #555;
+  font-size: 1rem;
+}
+
+/* Demo Notice Banner */
+.demo-notice-banner {
+  background-color: #fff9e6;
+  border-left: 4px solid #f6a623;
+  padding: 0.85rem 1.1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #664d03;
+  line-height: 1.5;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.demo-notice-banner strong {
+  color: #493602;
+}
+
+/* Controls Bar (Search, Filter, Sort) */
+.parking-controls-card {
+  background-color: #fff;
+  border: 1px solid #cfd8e8;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.parking-controls-grid {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1.2fr auto;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.control-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.control-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1a2e5a;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  color: #888;
+  pointer-events: none;
+  font-size: 0.9rem;
+}
+
+.control-input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #cfd8e8;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background-color: #fff;
+  color: #2d2d2d;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.control-input.has-icon {
+  padding-left: 2.2rem;
+}
+
+.control-input:focus {
+  outline: none;
+  border-color: #0e918c;
+  box-shadow: 0 0 0 3px rgba(14, 145, 140, 0.15);
+}
+
+.control-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.btn-clear {
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  background-color: #f0f2f5;
+  color: #444;
+  border: 1px solid #cfd8e8;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-clear:hover {
+  background-color: #e4e7eb;
+  color: #222;
+}
+
+/* Results Summary Line */
+.results-summary-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+  padding: 0 0.25rem;
+}
+
+.results-count-text {
+  font-weight: 600;
+  color: #1a2e5a;
+}
+
+.active-filters-info {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.status-badge.status-available {
+  background-color: #e8f5e9;
+  color: #1b5e20;
+  border: 1px solid #c8e6c9;
+}
+
+.status-badge.status-limited {
+  background-color: #fff3e0;
+  color: #b76e00;
+  border: 1px solid #ffe0b2;
+}
+
+.status-badge.status-full {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+.status-indicator {
+  font-size: 0.75rem;
+}
+
+/* Parking Cards Grid */
+.parking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+/* Parking Card */
+.parking-card {
+  background-color: #fff;
+  border: 1px solid #cfd8e8;
+  border-radius: 8px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.parking-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Status indicator stripe on left edge */
+.parking-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 5px;
+}
+
+.parking-card.card-status-available::before {
+  background-color: #2e7d32;
+}
+
+.parking-card.card-status-limited::before {
+  background-color: #ed6c02;
+}
+
+.parking-card.card-status-full::before {
+  background-color: #d32f2f;
+}
+
+.parking-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.parking-card-title {
+  font-size: 1.15rem;
+  color: #1a2e5a;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.parking-card-location {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* Metric & Capacity Meter */
+.spaces-metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.spaces-count-display {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.spaces-number {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #1a2e5a;
+  line-height: 1;
+}
+
+.spaces-label {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.spaces-full-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #d32f2f;
+}
+
+.occupancy-percentage {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #777;
+}
+
+/* Capacity meter bar */
+.capacity-meter {
+  width: 100%;
+  height: 8px;
+  background-color: #eaedf2;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.capacity-meter-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.capacity-meter-fill.card-status-available {
+  background-color: #2e7d32;
+}
+
+.capacity-meter-fill.card-status-limited {
+  background-color: #ed6c02;
+}
+
+.capacity-meter-fill.card-status-full {
+  background-color: #d32f2f;
+}
+
+/* Observation note */
+.parking-card-note {
+  background-color: #f8fafc;
+  border-left: 3px solid #0e918c;
+  padding: 0.5rem 0.65rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  color: #444;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+
+.note-text {
+  font-style: italic;
+  line-height: 1.35;
+}
+
+/* Card footer */
+.parking-card-footer {
+  border-top: 1px solid #f0f2f6;
+  padding-top: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.last-updated-text {
+  font-size: 0.78rem;
+  color: #888;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.card-action-link {
+  font-size: 0.82rem;
+  color: #0e918c;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid #0e918c;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.card-action-link:hover {
+  background-color: #0e918c;
+  color: #fff;
+}
+
+/* State Boxes (Loading, Error, No Results) */
+.state-box {
+  background-color: #fff;
+  border: 1px solid #cfd8e8;
+  border-radius: 8px;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.state-box-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.spinner {
+  width: 38px;
+  height: 38px;
+  border: 4px solid #eaedf2;
+  border-top-color: #0e918c;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.state-box-error {
+  border-color: #ffcdd2;
+  background-color: #fffbfb;
+}
+
+.state-error-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.state-box-error h3 {
+  color: #c62828;
+  margin-bottom: 0.5rem;
+}
+
+.state-box-error p {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.error-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.state-box-empty {
+  color: #666;
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.state-box-empty h3 {
+  color: #1a2e5a;
+  margin-bottom: 0.5rem;
+}
+
+.state-box-empty p {
+  margin-bottom: 1.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .parking-controls-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .control-actions {
+    grid-column: span 2;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .parking-controls-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .control-actions {
+    grid-column: span 1;
+    width: 100%;
+  }
+
+  .btn-clear {
+    width: 100%;
+  }
+
+  .parking-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .parking-grid {
+    grid-template-columns: 1fr;
+  }
+}
