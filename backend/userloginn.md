@@ -1,4 +1,4 @@
-admin@parkingpulse.lk 
+admin@parkingpulse.lk
 password123
 
 worker@parkingpulse.lk
