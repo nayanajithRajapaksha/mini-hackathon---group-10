@@ -19,9 +19,9 @@ const seedData = async () => {
 
     // 1. Seed Users
     const users = await User.create([
-      { email: 'admin@parkingpulse.lk', password: 'password123', role: 'admin' },
-      { email: 'worker@parkingpulse.lk', password: 'password123', role: 'worker' },
-      { email: 'driver@parkingpulse.lk', password: 'password123', role: 'driver' },
+      { name: 'System Administrator', email: 'admin@parkingpulse.lk', password: 'password123', role: 'admin' },
+      { name: 'Kandy Parking Worker', email: 'worker@parkingpulse.lk', password: 'password123', role: 'worker' },
+      { name: 'Demo Driver', email: 'driver@parkingpulse.lk', password: 'password123', role: 'driver' },
     ]);
 
     console.log('Seeded Users.');

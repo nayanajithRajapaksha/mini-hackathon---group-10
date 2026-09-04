@@ -12,6 +12,11 @@ This document tracks AI prompts used by student **IT24100120** during the develo
 | 2026-09-04 | UI refinement | Compact the parking-area form, add field labels, and use a worker dropdown | OpenAI Codex | IT24100120 |
 | 2026-09-04 | Version control | Commit and push the completed role-based parking management work | OpenAI Codex | IT24100120 |
 | 2026-09-04 | Merge resolution | Resolve pull-request conflicts with the latest `main` branch | OpenAI Codex | IT24100120 |
+| 2026-09-04 | Role navigation | Separate admin, worker, and driver landing pages and navigation | OpenAI Codex | IT24100120 |
+| 2026-09-04 | Role correction | Repair the reserved admin role and refresh server-authoritative sessions | OpenAI Codex | IT24100120 |
+| 2026-09-04 | Worker assignment | Add worker names to assignment dropdown and verify worker reporting flow | OpenAI Codex | IT24100120 |
+| 2026-09-04 | Worker login | Diagnose missing worker credentials and add non-destructive development bootstrap | OpenAI Codex | IT24100120 |
+| 2026-09-04 | Dashboard conflict | Resolve the latest WorkerDashboard merge conflict without weakening authentication | OpenAI Codex | IT24100120 |
 
 ---
 
@@ -170,3 +175,114 @@ This branch has conflicts that must be resolved. Use the command line to resolve
 - Kept compatible parking identifiers and reporting metadata introduced on `main`.
 - Preserved the intentional removal of prediction functionality.
 - Revalidated the combined frontend and backend before pushing the resolution.
+
+---
+
+## Prompt 07
+
+- **Date and time:** 2026-09-04
+- **Tool:** OpenAI Codex
+- **Purpose:** Correct overlapping role dashboards and make the authenticated account role clear.
+- **Team member using the tool:** IT24100120
+
+### Exact prompt
+
+```text
+when i log as a admin why this as a driver i think there is the issue , workers admins and drivers dashboards are overlapping
+```
+
+### Review and modification
+
+- Added role-based landing redirects: admins open the admin dashboard, workers open the worker dashboard, and drivers open the parking dashboard.
+- Separated navbar links by role so dashboards no longer overlap.
+- Displayed the full authenticated email and a clear role badge in the navbar.
+- Kept authorization tied to the database role instead of inferring privileges from an email address or username.
+
+---
+
+## Prompt 08
+
+- **Date and time:** 2026-09-04
+- **Tool:** OpenAI Codex
+- **Purpose:** Fix an existing `admin@parkingpulse.lk` database account incorrectly stored with the driver role.
+- **Team member using the tool:** IT24100120
+
+### Exact prompt
+
+```text
+still show as a driver so make sure again i want to dashboards are works well in users creditinatials because i log as a admin but it goes to driver dashboard
+```
+
+### Review and modification
+
+- Added startup administrator bootstrap and role correction for the reserved administrator email.
+- Blocked public driver registration from claiming the reserved administrator address.
+- Added authenticated session refresh through `/api/auth/me`, replacing stale browser role data with the current database role.
+- Retained strict role-based redirects and dashboard route authorization.
+
+---
+
+## Prompt 09
+
+- **Date and time:** 2026-09-04
+- **Tool:** OpenAI Codex
+- **Purpose:** Improve named worker assignment and strengthen the worker dashboard workflow.
+- **Team member using the tool:** IT24100120
+
+### Exact prompt
+
+```text
+i want drop down list and also shows the names of workers in assign workers and make sure worker dashboard work well
+```
+
+### Review and modification
+
+- Added names to user accounts and administrator user CRUD forms.
+- Updated the assignment dropdown to show each worker's name and email address.
+- Added guidance when no worker accounts exist.
+- Improved the worker dashboard with labeled fields, assigned-area dropdown details, capacity limits, loading feedback, and empty-assignment guidance.
+- Preserved backend authorization so workers can update only their assigned parking areas.
+
+---
+
+## Prompt 10
+
+- **Date and time:** 2026-09-04
+- **Tool:** OpenAI Codex
+- **Purpose:** Diagnose and correct worker login failure.
+- **Team member using the tool:** IT24100120
+
+### Exact prompt
+
+```text
+cant loging for workers check it
+```
+
+### Review and modification
+
+- Confirmed the API and database connection were healthy.
+- Tested the documented worker credentials and reproduced the invalid-credentials response.
+- Queried non-sensitive user metadata and confirmed that MongoDB contained only the administrator account.
+- Added a non-destructive development bootstrap that creates the documented worker account only when it is missing.
+- Kept production worker creation under administrator control unless explicit worker environment credentials are configured.
+
+---
+
+## Prompt 11
+
+- **Date and time:** 2026-09-04
+- **Tool:** OpenAI Codex
+- **Purpose:** Resolve the attached worker-dashboard conflict from the latest `main` branch.
+- **Team member using the tool:** IT24100120
+
+### Exact request
+
+The attached `pasted-text.txt` contained conflicting `IT24100120` and `main` implementations of `WorkerDashboard.jsx` and requested Codex to read and act on it.
+
+### Review and modification
+
+- Merged the latest `origin/main` and reproduced the WorkerDashboard conflict.
+- Retained the assigned-area availability-report CRUD workflow with loading, validation, and empty-assignment states.
+- Preserved the compatible backend restriction allowing workers to change only assigned parking areas.
+- Rejected insecure incoming changes that replaced signed JWTs and bcrypt with base64 tokens and unsalted SHA-256 password hashes.
+- Verified that the worker-area dropdown text renders correctly.

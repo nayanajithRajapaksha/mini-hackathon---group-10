@@ -1,11 +1,14 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const router = express.Router();
 
-// Generate Mock JWT using base64 encoding (hackathon simplified)
+// Generate JWT
 const generateToken = (id) => {
-  return Buffer.from(JSON.stringify({ id })).toString('base64');
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: '30d',
+  });
 };
 
 // @desc    Register new user
@@ -17,6 +20,11 @@ router.post('/register', async (req, res) => {
 
     if (!email || !password) {
       return res.status(400).json({ status: 'error', message: 'Please add all fields' });
+    }
+
+    const reservedAdminEmail = (process.env.ADMIN_EMAIL || 'admin@parkingpulse.lk').toLowerCase();
+    if (email.trim().toLowerCase() === reservedAdminEmail) {
+      return res.status(403).json({ status: 'error', message: 'This email is reserved for the system administrator' });
     }
 
     // Check if user exists

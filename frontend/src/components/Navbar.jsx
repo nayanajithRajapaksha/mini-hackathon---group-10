@@ -12,44 +12,41 @@ function Navbar() {
     navigate('/login');
   };
 
+  const dashboardPath = user?.role === 'admin' ? '/admin' : user?.role === 'worker' ? '/worker' : '/parking';
+
   return (
     <nav className="navbar" role="navigation" aria-label="Main navigation">
       <div className="navbar-inner">
-        <NavLink to="/" className="navbar-brand" aria-label="ParkingPulse LK Home">
+        <NavLink to={user ? dashboardPath : '/login'} className="navbar-brand" aria-label="ParkingPulse LK dashboard">
           <img src="/Parking_Pulse.png" alt="ParkingPulse LK" className="navbar-logo" />
           <span className="navbar-brand-text">ParkingPulse LK</span>
         </NavLink>
 
-        <ul className="navbar-links">
-          <li>
-            <NavLink to="/" end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-              Home
-            </NavLink>
-          </li>
-          <li>
+        {user && <ul className="navbar-links">
+          {user.role === 'driver' && <li>
             <NavLink to="/parking" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-              Check Parking
+              Driver Dashboard
             </NavLink>
-          </li>
+          </li>}
           
           {/* Only Admin and Worker can report availability */}
-          {user && (user.role === 'admin' || user.role === 'worker') && (
+          {user.role === 'worker' && (
             <li>
               <NavLink to="/worker" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
                 Worker Dashboard
               </NavLink>
             </li>
           )}
-          {user?.role === 'admin' && <li><NavLink to="/admin" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Admin Dashboard</NavLink></li>}
+          {user.role === 'admin' && <li><NavLink to="/admin" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Admin Dashboard</NavLink></li>}
 
-        </ul>
+        </ul>}
 
         {/* User Auth Section */}
         <div className="navbar-auth">
           {user ? (
             <div className="user-menu" style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
               <span style={{color: '#fff', fontSize: '0.9rem'}}>
-                Hi, <strong>{user.email.split('@')[0]}</strong> <span style={{opacity: 0.7, fontSize: '0.8rem'}}>({user.role})</span>
+                <strong>{user.email}</strong> <span className={`role-pill role-${user.role}`}>{user.role}</span>
               </span>
               <button 
                 onClick={handleLogout} 

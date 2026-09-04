@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
+const ensureAdmin = require('./config/ensureAdmin');
 
 // Create Express app
 const app = express();
@@ -45,6 +46,7 @@ app.use('/api/*path', (req, res) => {
 const startServer = async () => {
   try {
     await connectDB();
+    await ensureAdmin();
     app.listen(PORT, () => {
       console.log(`ParkingPulse LK server running at http://localhost:${PORT}`);
     });
