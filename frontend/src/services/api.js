@@ -1,10 +1,12 @@
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const getToken = () => {
   try { return JSON.parse(localStorage.getItem('user'))?.token; } catch { return null; }
 };
 
 async function request(path, options = {}) {
   const token = getToken();
-  const response = await fetch(`/api${path}`, {
+  const response = await fetch(`${API_BASE}/api${path}`, {
     ...options,
     headers: {
       ...(options.body ? { 'Content-Type': 'application/json' } : {}),
