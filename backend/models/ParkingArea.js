@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const parkingAreaSchema = new mongoose.Schema({
+  parkingId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   name: {
     type: String,
     required: true,
@@ -16,12 +21,21 @@ const parkingAreaSchema = new mongoose.Schema({
   availableSpaces: {
     type: Number,
     required: true,
+    default: 0,
   },
   status: {
     type: String,
     enum: ['Available', 'Limited', 'Full'],
     default: 'Available',
-  }
+  },
+  lastUpdated: {
+    type: Date,
+    default: Date.now,
+  },
+  note: {
+    type: String,
+    default: '',
+  },
 }, { timestamps: true });
 
 // Middleware to automatically update status based on available spaces

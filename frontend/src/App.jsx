@@ -6,6 +6,7 @@ import Footer from './components/Footer.jsx';
 import HomePage from './pages/HomePage.jsx';
 import PredictionPage from './pages/PredictionPage.jsx';
 import ParkingPage from './pages/ParkingPage.jsx';
+import ReportPage from './pages/ReportPage.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
@@ -16,31 +17,32 @@ function App() {
       <div className="app-container">
         <Navbar />
 
-        {/* Main content area with route switching */}
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/parking" element={<ParkingPage />} />
-            <Route path="/predict" element={<PredictionPage />} />
-            
-            {/* Auth Routes */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
+      {/* Main content area with route switching */}
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/parking" element={<ParkingPage />} />
+          <Route path="/predict" element={<PredictionPage />} />
+          
+          {/* Auth Routes */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
 
-            {/* Protected Route for Reporting - Only for Admin & Worker */}
-            <Route 
-              path="/report" 
-              element={
-                <ProtectedRoute allowedRoles={['admin', 'worker']}>
-                  <PlaceholderPage feature="Report Availability" />
-                </ProtectedRoute>
-              } 
-            />
+          {/* Protected Route for Reporting - Only for Admin & Worker */}
+          <Route 
+            path="/report" 
+            element={
+              <ProtectedRoute allowedRoles={['admin', 'worker']}>
+                <ReportPage />
+              </ProtectedRoute>
+            } 
+          />
 
-            {/* Catch-all for unknown URLs */}
-            <Route path="*" element={<PlaceholderPage feature="Page Not Found" notFound />} />
-          </Routes>
-        </main>
+          {/* Catch-all for unknown URLs */}
+          <Route path="*" element={<PlaceholderPage feature="Page Not Found" notFound />} />
+        </Routes>
+      </main>
+
 
         <Footer />
       </div>
