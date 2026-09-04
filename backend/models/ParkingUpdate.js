@@ -1,21 +1,31 @@
 const mongoose = require('mongoose');
 
 const parkingUpdateSchema = new mongoose.Schema({
-  areaId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'ParkingArea',
-    required: true,
+  parkingId: {
+    type: String,
+    required: false,
   },
   availableSpaces: {
     type: Number,
     required: true,
   },
-  observationTime: {
+  observedAt: {
     type: Date,
     default: Date.now,
   },
   note: {
     type: String,
+    default: '',
+  },
+  // Keep Member 4's fields
+  areaId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ParkingArea',
+    required: false,
+  },
+  observationTime: {
+    type: Date,
+    default: Date.now,
   },
   reportedBy: {
     type: mongoose.Schema.Types.ObjectId,

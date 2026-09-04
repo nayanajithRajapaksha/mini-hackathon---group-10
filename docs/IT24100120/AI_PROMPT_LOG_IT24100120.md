@@ -11,6 +11,7 @@ This document tracks AI prompts used by student **IT24100120** during the develo
 | 2026-09-04 | Authentication and CRUD | Add login-first access, admin and worker dashboards, parking-worker assignments, and remove predictions | OpenAI Codex | IT24100120 |
 | 2026-09-04 | UI refinement | Compact the parking-area form, add field labels, and use a worker dropdown | OpenAI Codex | IT24100120 |
 | 2026-09-04 | Version control | Commit and push the completed role-based parking management work | OpenAI Codex | IT24100120 |
+| 2026-09-04 | Merge resolution | Resolve pull-request conflicts with the latest `main` branch | OpenAI Codex | IT24100120 |
 
 ---
 
@@ -146,3 +147,26 @@ now push these changes into my branch with commit msg and also update my ai prom
 - Reviewed the complete authentication, administration, worker-assignment, CRUD, UI, and prediction-removal change set.
 - Updated the student-specific AI prompt log and submission details before committing.
 - Prepared the verified implementation for delivery on the `IT24100120` branch.
+
+---
+
+## Prompt 06
+
+- **Date and time:** 2026-09-04
+- **Tool:** OpenAI Codex
+- **Purpose:** Resolve pull-request conflicts between `IT24100120` and the latest `main` branch.
+- **Team member using the tool:** IT24100120
+
+### Exact prompt
+
+```text
+This branch has conflicts that must be resolved. Use the command line to resolve conflicts before continuing.
+```
+
+### Review and modification
+
+- Merged the latest `origin/main` into `IT24100120` and resolved all seven reported conflicts.
+- Preserved login-first access, role-based CRUD dashboards, and worker-to-parking assignments.
+- Kept compatible parking identifiers and reporting metadata introduced on `main`.
+- Preserved the intentional removal of prediction functionality.
+- Revalidated the combined frontend and backend before pushing the resolution.

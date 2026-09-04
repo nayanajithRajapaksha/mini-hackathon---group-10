@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 
 const parkingAreaSchema = new mongoose.Schema({
+  parkingId: {
+    type: String,
+    unique: true,
+    sparse: true,
+    trim: true,
+  },
   name: {
     type: String,
     required: true,
@@ -26,7 +32,15 @@ const parkingAreaSchema = new mongoose.Schema({
   assignedWorkers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-  }]
+  }],
+  lastUpdated: {
+    type: Date,
+    default: Date.now,
+  },
+  note: {
+    type: String,
+    default: '',
+  }
 }, { timestamps: true });
 
 // Middleware to automatically update status based on available spaces
@@ -42,6 +56,7 @@ parkingAreaSchema.pre('save', function () {
   } else {
     this.status = 'Available';
   }
+  if (this.isModified('availableSpaces')) this.lastUpdated = new Date();
 });
 
 module.exports = mongoose.model('ParkingArea', parkingAreaSchema);

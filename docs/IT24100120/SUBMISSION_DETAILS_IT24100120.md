@@ -41,3 +41,4 @@ Key contributions I completed:
 - Backend route syntax validation: `node --check`
 - Responsive dashboard layouts included for desktop and mobile use.
 - Final implementation and documentation delivered through the `IT24100120` Git branch.
+- Pull-request conflicts with the latest `main` branch were resolved and the integrated result was revalidated.

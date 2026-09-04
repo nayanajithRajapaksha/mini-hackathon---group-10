@@ -74,6 +74,10 @@ router.post('/parking-updates', protect, authorizeRoles('worker', 'admin'), asyn
       return res.status(404).json({ status: 'error', message: 'Parking area not found' });
     }
 
+    if (req.user.role === 'worker' && !area.assignedWorkers.some((id) => id.equals(req.user._id))) {
+      return res.status(403).json({ status: 'error', message: 'You are not assigned to this parking area' });
+    }
+
     if (availableSpaces < 0 || availableSpaces > area.totalSpaces) {
       return res.status(400).json({ status: 'error', message: 'Invalid number of available spaces' });
     }
@@ -81,13 +85,16 @@ router.post('/parking-updates', protect, authorizeRoles('worker', 'admin'), asyn
     // Create the update log
     const update = await ParkingUpdate.create({
       areaId,
+      parkingId: area.parkingId,
       availableSpaces,
+      observedAt: new Date(),
       note,
       reportedBy: req.user._id
     });
 
     // Update the actual parking area's current status
     area.availableSpaces = availableSpaces;
+    area.note = note || '';
     await area.save();
 
     res.status(201).json({
@@ -120,9 +127,6 @@ router.put('/parking-updates/:id', protect, authorizeRoles('worker', 'admin'), a
       return res.status(403).json({ status: 'error', message: 'You can only edit your own reports' });
     }
 
-    if (req.user.role === 'worker' && !area.assignedWorkers.some((id) => id.equals(req.user._id))) {
-      return res.status(403).json({ status: 'error', message: 'You are not assigned to this parking area' });
-    }
     const area = await ParkingArea.findById(req.body.areaId || update.areaId);
     const spaces = req.body.availableSpaces ?? update.availableSpaces;
     if (!area || spaces < 0 || spaces > area.totalSpaces) {
@@ -132,11 +136,14 @@ router.put('/parking-updates/:id', protect, authorizeRoles('worker', 'admin'), a
       return res.status(403).json({ status: 'error', message: 'You are not assigned to this parking area' });
     }
     update.areaId = area._id;
+    update.parkingId = area.parkingId;
     update.availableSpaces = spaces;
+    update.observedAt = new Date();
     if (req.body.note !== undefined) update.note = req.body.note;
     update.observationTime = new Date();
     await update.save();
     area.availableSpaces = spaces;
+    area.note = update.note || '';
     await area.save();
     await update.populate('areaId', 'name location totalSpaces');
     res.json({ status: 'success', data: update });
