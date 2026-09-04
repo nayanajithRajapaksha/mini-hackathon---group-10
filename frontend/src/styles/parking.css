@@ -8,16 +8,59 @@
   gap: 1.5rem;
 }
 
-/* Page Header */
+/* Page Header with Live Pulse Pill */
 .parking-page-header {
   text-align: left;
+}
+
+.title-with-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.35rem;
 }
 
 .parking-page-title {
   font-size: 1.85rem;
   color: #1a2e5a;
-  margin-bottom: 0.35rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.live-pulse-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  border-radius: 9999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.75rem;
   font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  background-color: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+  animation: pulse-ring 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 0.75;
+  }
 }
 
 .parking-page-subtitle {
@@ -30,11 +73,20 @@
   background-color: #fff9e6;
   border-left: 4px solid #f6a623;
   padding: 0.85rem 1.1rem;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 0.9rem;
   color: #664d03;
   line-height: 1.5;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.demo-notice-icon {
+  color: #b45309;
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
 .demo-notice-banner strong {
@@ -44,10 +96,10 @@
 /* Controls Bar (Search, Filter, Sort) */
 .parking-controls-card {
   background-color: #fff;
-  border: 1px solid #cfd8e8;
-  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
   padding: 1.25rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.05);
 }
 
 .parking-controls-grid {
@@ -78,24 +130,23 @@
 .search-icon {
   position: absolute;
   left: 0.75rem;
-  color: #888;
+  color: #94a3b8;
   pointer-events: none;
-  font-size: 0.9rem;
 }
 
 .control-input {
   width: 100%;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid #cfd8e8;
-  border-radius: 6px;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
   font-size: 0.95rem;
   background-color: #fff;
-  color: #2d2d2d;
+  color: #1e293b;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .control-input.has-icon {
-  padding-left: 2.2rem;
+  padding-left: 2.25rem;
 }
 
 .control-input:focus {
@@ -111,21 +162,26 @@
 }
 
 .btn-clear {
-  padding: 0.6rem 1rem;
+  padding: 0.65rem 1.1rem;
   font-size: 0.9rem;
   white-space: nowrap;
-  background-color: #f0f2f5;
-  color: #444;
-  border: 1px solid #cfd8e8;
-  border-radius: 6px;
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s;
+  font-weight: 600;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
-.btn-clear:hover {
-  background-color: #e4e7eb;
-  color: #222;
+.btn-clear:hover:not(:disabled) {
+  background-color: #e2e8f0;
+  color: #0f172a;
+}
+
+.btn-clear:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Results Summary Line */
@@ -136,53 +192,76 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   font-size: 0.9rem;
-  color: #666;
+  color: #64748b;
   padding: 0 0.25rem;
 }
 
 .results-count-text {
-  font-weight: 600;
+  font-weight: 500;
+  color: #334155;
+}
+
+.results-count-text strong {
   color: #1a2e5a;
+  font-weight: 700;
 }
 
 .active-filters-info {
   font-size: 0.85rem;
-  color: #777;
+  color: #64748b;
 }
 
-/* Status Badges */
+/* Modern Status Badges (Clean Glowing Dots) */
 .status-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.25rem 0.65rem;
-  border-radius: 20px;
+  gap: 0.45rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
   font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: capitalize;
+  font-weight: 650;
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
 
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 .status-badge.status-available {
-  background-color: #e8f5e9;
-  color: #1b5e20;
-  border: 1px solid #c8e6c9;
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.status-badge.status-available .status-dot {
+  background-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
 }
 
 .status-badge.status-limited {
-  background-color: #fff3e0;
-  color: #b76e00;
-  border: 1px solid #ffe0b2;
+  background-color: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.status-badge.status-limited .status-dot {
+  background-color: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.25);
 }
 
 .status-badge.status-full {
-  background-color: #ffebee;
-  color: #c62828;
-  border: 1px solid #ffcdd2;
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
 }
 
-.status-indicator {
-  font-size: 0.75rem;
+.status-badge.status-full .status-dot {
+  background-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25);
 }
 
 /* Parking Cards Grid */
@@ -195,24 +274,24 @@
 /* Parking Card */
 .parking-card {
   background-color: #fff;
-  border: 1px solid #cfd8e8;
-  border-radius: 8px;
-  padding: 1.25rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.35rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 3px 10px -2px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
 }
 
 .parking-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.08);
 }
 
-/* Status indicator stripe on left edge */
+/* Left border accent line */
 .parking-card::before {
   content: '';
   position: absolute;
@@ -223,15 +302,15 @@
 }
 
 .parking-card.card-status-available::before {
-  background-color: #2e7d32;
+  background-color: #10b981;
 }
 
 .parking-card.card-status-limited::before {
-  background-color: #ed6c02;
+  background-color: #f59e0b;
 }
 
 .parking-card.card-status-full::before {
-  background-color: #d32f2f;
+  background-color: #ef4444;
 }
 
 .parking-card-header {
@@ -246,14 +325,22 @@
   font-size: 1.15rem;
   color: #1a2e5a;
   font-weight: 700;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
   line-height: 1.3;
 }
 
 .parking-card-location {
   font-size: 0.85rem;
-  color: #666;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
   line-height: 1.4;
+}
+
+.card-icon {
+  color: #64748b;
+  flex-shrink: 0;
 }
 
 /* Metric & Capacity Meter */
@@ -271,7 +358,7 @@
 }
 
 .spaces-number {
-  font-size: 1.75rem;
+  font-size: 1.85rem;
   font-weight: 800;
   color: #1a2e5a;
   line-height: 1;
@@ -279,62 +366,68 @@
 
 .spaces-label {
   font-size: 0.9rem;
-  color: #555;
+  color: #64748b;
   font-weight: 500;
 }
 
 .spaces-full-text {
   font-size: 1.25rem;
-  font-weight: 700;
-  color: #d32f2f;
+  font-weight: 750;
+  color: #dc2626;
 }
 
 .occupancy-percentage {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #777;
+  color: #64748b;
 }
 
 /* Capacity meter bar */
 .capacity-meter {
   width: 100%;
-  height: 8px;
-  background-color: #eaedf2;
-  border-radius: 4px;
+  height: 7px;
+  background-color: #f1f5f9;
+  border-radius: 9999px;
   overflow: hidden;
   margin-bottom: 1rem;
 }
 
 .capacity-meter-fill {
   height: 100%;
-  border-radius: 4px;
+  border-radius: 9999px;
   transition: width 0.4s ease;
 }
 
 .capacity-meter-fill.card-status-available {
-  background-color: #2e7d32;
+  background: linear-gradient(90deg, #10b981, #059669);
 }
 
 .capacity-meter-fill.card-status-limited {
-  background-color: #ed6c02;
+  background: linear-gradient(90deg, #f59e0b, #d97706);
 }
 
 .capacity-meter-fill.card-status-full {
-  background-color: #d32f2f;
+  background: linear-gradient(90deg, #ef4444, #dc2626);
 }
 
 /* Observation note */
 .parking-card-note {
   background-color: #f8fafc;
   border-left: 3px solid #0e918c;
-  padding: 0.5rem 0.65rem;
-  border-radius: 4px;
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
   font-size: 0.82rem;
-  color: #444;
+  color: #334155;
   margin-bottom: 1rem;
   display: flex;
-  gap: 0.4rem;
+  gap: 0.45rem;
   align-items: flex-start;
+}
+
+.note-icon {
+  color: #0e918c;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .note-text {
@@ -344,7 +437,7 @@
 
 /* Card footer */
 .parking-card-footer {
-  border-top: 1px solid #f0f2f6;
+  border-top: 1px solid #f1f5f9;
   padding-top: 0.75rem;
   display: flex;
   justify-content: space-between;
@@ -355,7 +448,10 @@
 
 .last-updated-text {
   font-size: 0.78rem;
-  color: #888;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .card-actions {
@@ -368,24 +464,26 @@
   color: #0e918c;
   text-decoration: none;
   font-weight: 600;
-  padding: 0.2rem 0.5rem;
+  padding: 0.25rem 0.65rem;
   border: 1px solid #0e918c;
-  border-radius: 4px;
-  transition: background-color 0.2s, color 0.2s;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
 .card-action-link:hover {
   background-color: #0e918c;
   color: #fff;
+  box-shadow: 0 2px 6px rgba(14, 145, 140, 0.25);
 }
 
 /* State Boxes (Loading, Error, No Results) */
 .state-box {
   background-color: #fff;
-  border: 1px solid #cfd8e8;
-  border-radius: 8px;
-  padding: 3rem 1.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 3.5rem 1.5rem;
   text-align: center;
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.04);
 }
 
 .state-box-loading {
@@ -396,9 +494,9 @@
 }
 
 .spinner {
-  width: 38px;
-  height: 38px;
-  border: 4px solid #eaedf2;
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e2e8f0;
   border-top-color: #0e918c;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -411,22 +509,22 @@
 }
 
 .state-box-error {
-  border-color: #ffcdd2;
+  border-color: #fecaca;
   background-color: #fffbfb;
 }
 
 .state-error-icon {
-  font-size: 2.2rem;
   margin-bottom: 0.5rem;
 }
 
 .state-box-error h3 {
-  color: #c62828;
+  color: #dc2626;
   margin-bottom: 0.5rem;
+  font-weight: 700;
 }
 
 .state-box-error p {
-  color: #555;
+  color: #64748b;
   font-size: 0.95rem;
   margin-bottom: 1.25rem;
   max-width: 500px;
@@ -442,17 +540,17 @@
 }
 
 .state-box-empty {
-  color: #666;
+  color: #64748b;
 }
 
 .empty-icon {
-  font-size: 2.5rem;
   margin-bottom: 0.5rem;
 }
 
 .state-box-empty h3 {
   color: #1a2e5a;
   margin-bottom: 0.5rem;
+  font-weight: 700;
 }
 
 .state-box-empty p {

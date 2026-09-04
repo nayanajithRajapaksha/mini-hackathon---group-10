@@ -16,7 +16,8 @@ function Navbar() {
     <nav className="navbar" role="navigation" aria-label="Main navigation">
       <div className="navbar-inner">
         <NavLink to="/" className="navbar-brand" aria-label="ParkingPulse LK Home">
-          🚗 ParkingPulse LK
+          <img src="/Parking_Pulse.png" alt="ParkingPulse LK" className="navbar-logo" />
+          <span className="navbar-brand-text">ParkingPulse LK</span>
         </NavLink>
 
         <ul className="navbar-links">

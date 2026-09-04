@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
  * Formats ISO date string into a user-friendly readable format.
  */
 function formatLastUpdated(dateStr) {
-  if (!dateStr) return 'Just recently';
+  if (!dateStr) return 'Recently';
   try {
     const date = new Date(dateStr);
     if (isNaN(date.getTime())) return 'Recently';
@@ -23,7 +23,7 @@ function formatLastUpdated(dateStr) {
 
 /**
  * ParkingCard Component
- * Displays key details of a single Kandy parking area.
+ * Modern card displaying live capacity, status, location, and quick actions.
  */
 function ParkingCard({ area }) {
   const {
@@ -57,7 +57,11 @@ function ParkingCard({ area }) {
         <div>
           <h3 id={`parking-title-${id}`} className="parking-card-title">{name}</h3>
           <p className="parking-card-location">
-            <span aria-hidden="true">📍</span> {location}
+            <svg className="card-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span>{location}</span>
           </p>
         </div>
         <StatusBadge status={status} />
@@ -81,7 +85,7 @@ function ParkingCard({ area }) {
           <span className="occupancy-percentage">{availablePercentage}% free</span>
         </div>
 
-        {/* Progress bar visual indicator */}
+        {/* Capacity meter visual indicator */}
         <div
           className="capacity-meter"
           role="progressbar"
@@ -99,15 +103,21 @@ function ParkingCard({ area }) {
         {/* Observation note */}
         {note && (
           <div className="parking-card-note">
-            <span className="note-icon" aria-hidden="true">💬</span>
+            <svg className="note-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
             <span className="note-text">{note}</span>
           </div>
         )}
 
-        {/* Timestamp */}
+        {/* Footer info & quick actions */}
         <div className="parking-card-footer">
           <span className="last-updated-text">
-            <span aria-hidden="true">🕒</span> Updated {formatLastUpdated(lastUpdated)}
+            <svg className="card-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>Updated {formatLastUpdated(lastUpdated)}</span>
           </span>
 
           <div className="card-actions">
@@ -116,14 +126,7 @@ function ParkingCard({ area }) {
               className="card-action-link"
               title={`Report update for ${name}`}
             >
-              Update
-            </Link>
-            <Link
-              to="/predict"
-              className="card-action-link"
-              title={`Predict availability for ${name}`}
-            >
-              Predict
+              Report Update
             </Link>
           </div>
         </div>
