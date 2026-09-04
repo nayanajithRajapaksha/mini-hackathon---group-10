@@ -34,3 +34,5 @@ npm run dev
 - **Frontend:** React, Vite, React Router, CSS
 - **Backend:** Node.js, Express
 - **Database:** MongoDB Atlas with Mongoose (planned)
+
+The hackathon repository also tracks the project as `mini-hackathon---group-10`.
