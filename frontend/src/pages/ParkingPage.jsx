@@ -74,14 +74,12 @@ function ParkingPage() {
         if (Array.isArray(data) && data.length > 0) {
           setAreas(data);
         } else {
-          // If the backend has no data seeded yet, use master plan sample data
           setAreas(DEMO_FALLBACK_AREAS);
           setUsingFallback(true);
         }
         setLoading(false);
       })
       .catch((err) => {
-        // Offer graceful fallback so evaluation and testing can continue smoothly
         setError(err.message || 'Failed to connect to the backend server.');
         setAreas(DEMO_FALLBACK_AREAS);
         setUsingFallback(true);
@@ -97,14 +95,12 @@ function ParkingPage() {
   const filteredAndSortedAreas = useMemo(() => {
     return areas
       .filter((area) => {
-        // Search filter: case-insensitive match on name or location
         const searchLower = searchTerm.trim().toLowerCase();
         const matchesSearch =
           !searchLower ||
           (area.name && area.name.toLowerCase().includes(searchLower)) ||
           (area.location && area.location.toLowerCase().includes(searchLower));
 
-        // Status filter: exact match or all
         const matchesStatus =
           !selectedStatus ||
           (area.status && area.status.toLowerCase() === selectedStatus.toLowerCase());
@@ -113,17 +109,14 @@ function ParkingPage() {
       })
       .sort((a, b) => {
         if (sortOption === 'spaces') {
-          // Most spaces available first
           return (b.availableSpaces || 0) - (a.availableSpaces || 0);
         }
-        // Default: Latest update first
         const timeA = new Date(a.lastUpdated || 0).getTime();
         const timeB = new Date(b.lastUpdated || 0).getTime();
         return timeB - timeA;
       });
   }, [areas, searchTerm, selectedStatus, sortOption]);
 
-  // Reset all search and filter controls
   const handleClearControls = () => {
     setSearchTerm('');
     setSelectedStatus('');
@@ -136,7 +129,12 @@ function ParkingPage() {
     <div className="parking-page">
       {/* Header section */}
       <header className="parking-page-header">
-        <h1 className="parking-page-title">Check Parking Availability</h1>
+        <div className="title-with-pill">
+          <span className="live-pulse-pill">
+            <span className="pulse-dot"></span> Live Data
+          </span>
+          <h1 className="parking-page-title">Kandy Parking Availability</h1>
+        </div>
         <p className="parking-page-subtitle">
           Browse real-time parking spaces across central Kandy demonstration areas.
         </p>
@@ -144,9 +142,18 @@ function ParkingPage() {
 
       {/* Demonstration notice */}
       <div className="demo-notice-banner" role="note">
-        <strong>Demo notice:</strong> Parking availability and predictions in this student
-        prototype use sample and community-reported information. Spaces are not reserved or
-        guaranteed. Confirm availability when you arrive.
+        <div className="demo-notice-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <p>
+          <strong>Demo Notice:</strong> Parking availability and predictions in this student
+          prototype use sample and community-reported information. Spaces are not reserved or
+          guaranteed. Confirm availability when you arrive.
+        </p>
       </div>
 
       {/* Search, Filter, and Sort Controls */}
@@ -158,7 +165,10 @@ function ParkingPage() {
               Search by name or location
             </label>
             <div className="search-input-wrapper">
-              <span className="search-icon" aria-hidden="true">🔍</span>
+              <svg className="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
               <input
                 id="parking-search"
                 type="text"
@@ -182,9 +192,9 @@ function ParkingPage() {
               onChange={(e) => setSelectedStatus(e.target.value)}
             >
               <option value="">All Statuses</option>
-              <option value="Available">Available (🟢)</option>
-              <option value="Limited">Limited (🟡)</option>
-              <option value="Full">Full (🔴)</option>
+              <option value="Available">Available</option>
+              <option value="Limited">Limited</option>
+              <option value="Full">Full</option>
             </select>
           </div>
 
@@ -221,12 +231,12 @@ function ParkingPage() {
       {/* Results Summary Bar */}
       <div className="results-summary-bar">
         <p className="results-count-text">
-          Showing {filteredAndSortedAreas.length} of {areas.length} parking {areas.length === 1 ? 'area' : 'areas'}
+          Showing <strong>{filteredAndSortedAreas.length}</strong> of <strong>{areas.length}</strong> parking {areas.length === 1 ? 'area' : 'areas'}
         </p>
 
         {usingFallback && (
           <span className="active-filters-info">
-            (Displaying verified Kandy demonstration dataset)
+            (Verified Kandy demonstration dataset)
           </span>
         )}
       </div>
@@ -239,7 +249,13 @@ function ParkingPage() {
         </div>
       ) : error && !usingFallback ? (
         <div className="state-box state-box-error" role="alert">
-          <div className="state-error-icon" aria-hidden="true">⚠️</div>
+          <div className="state-error-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#d32f2f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
           <h3>Unable to load parking areas</h3>
           <p>{error}</p>
           <div className="error-actions">
@@ -250,7 +266,12 @@ function ParkingPage() {
         </div>
       ) : filteredAndSortedAreas.length === 0 ? (
         <div className="state-box state-box-empty" role="status">
-          <div className="empty-icon" aria-hidden="true">🔎</div>
+          <div className="empty-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#64748b" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
           <h3>No matching parking areas found</h3>
           <p>
             No demonstration parking area matches your current search or filter criteria.
