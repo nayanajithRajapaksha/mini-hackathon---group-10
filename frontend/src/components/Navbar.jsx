@@ -9,7 +9,7 @@ function Navbar() {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate('/login');
   };
 
   return (
@@ -35,17 +35,13 @@ function Navbar() {
           {/* Only Admin and Worker can report availability */}
           {user && (user.role === 'admin' || user.role === 'worker') && (
             <li>
-              <NavLink to="/report" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-                Report Availability
+              <NavLink to="/worker" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+                Worker Dashboard
               </NavLink>
             </li>
           )}
+          {user?.role === 'admin' && <li><NavLink to="/admin" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Admin Dashboard</NavLink></li>}
 
-          <li>
-            <NavLink to="/predict" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-              Predict Availability
-            </NavLink>
-          </li>
         </ul>
 
         {/* User Auth Section */}

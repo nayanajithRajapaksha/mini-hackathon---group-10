@@ -19,7 +19,7 @@ const LoginPage = () => {
     const result = await login(email, password);
     
     if (result.success) {
-      navigate('/');
+      navigate(result.user.role === 'admin' ? '/admin' : result.user.role === 'worker' ? '/worker' : '/parking');
     } else {
       setError(result.message);
       setIsLoading(false);
