@@ -1,64 +1,33 @@
-/* Frontend API service — uses fetch via the Vite /api proxy */
+const getToken = () => {
+  try { return JSON.parse(localStorage.getItem('user'))?.token; } catch { return null; }
+};
 
-/**
- * Fetch all parking areas from the backend.
- * Returns the data array from the response.
- */
-export async function getParkingAreas() {
-  const response = await fetch('/api/parking-areas');
-
-  if (!response.ok) {
-    throw new Error('Unable to load parking areas. Please try again later.');
-  }
-
-  const body = await response.json();
-
-  if (!body.success) {
-    throw new Error('The server returned an unsuccessful response.');
-  }
-
+async function request(path, options = {}) {
+  const token = getToken();
+  const response = await fetch(`/api${path}`, {
+    ...options,
+    headers: {
+      ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...options.headers,
+    },
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok || body.status === 'error') throw new Error(body.message || 'Request failed');
   return body.data;
 }
 
-/**
- * Fetch a prediction for a specific parking area, day type, and time slot.
- * Returns the prediction data object from the response.
- */
-export async function getPrediction(parkingId, dayType, timeSlot) {
-  const params = new URLSearchParams({ parkingId, dayType, timeSlot });
-  const response = await fetch(`/api/predictions?${params}`);
+export const getParkingAreas = () => request('/parking-areas');
+export const createParkingArea = (data) => request('/parking-areas', { method: 'POST', body: JSON.stringify(data) });
+export const updateParkingArea = (id, data) => request(`/parking-areas/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+export const deleteParkingArea = (id) => request(`/parking-areas/${id}`, { method: 'DELETE' });
 
-  if (!response.ok) {
-    throw new Error('Unable to get prediction. Please try again later.');
-  }
+export const getUsers = () => request('/admin/users');
+export const createUser = (data) => request('/admin/users', { method: 'POST', body: JSON.stringify(data) });
+export const updateUser = (id, data) => request(`/admin/users/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+export const deleteUser = (id) => request(`/admin/users/${id}`, { method: 'DELETE' });
 
-  const body = await response.json();
-
-  if (!body.success) {
-    throw new Error('The server returned an unsuccessful prediction response.');
-  }
-
-  return body.data;
-}
-
-/**
- * Submit a parking availability update to the backend.
- * Returns the full response body (success, message, errors, data).
- */
-export async function submitParkingUpdate(updateData) {
-  try {
-    const response = await fetch('/api/parking-updates', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updateData),
-    });
-
-    const body = await response.json();
-    return body;
-  } catch (error) {
-    return {
-      success: false,
-      message: 'Unable to connect to the server. Please check your connection and try again.',
-    };
-  }
-}
+export const getParkingUpdates = () => request('/parking-updates');
+export const createParkingUpdate = (data) => request('/parking-updates', { method: 'POST', body: JSON.stringify(data) });
+export const updateParkingUpdate = (id, data) => request(`/parking-updates/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+export const deleteParkingUpdate = (id) => request(`/parking-updates/${id}`, { method: 'DELETE' });

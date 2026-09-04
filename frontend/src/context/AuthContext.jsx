@@ -10,14 +10,18 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch {
+        localStorage.removeItem('user');
+      }
     }
     setLoading(false);
   }, []);
 
   const login = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -30,7 +34,7 @@ export const AuthProvider = ({ children }) => {
       if (data.status === 'success') {
         setUser(data.data);
         localStorage.setItem('user', JSON.stringify(data.data));
-        return { success: true };
+        return { success: true, user: data.data };
       } else {
         return { success: false, message: data.message };
       }
@@ -39,14 +43,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signup = async (email, password, role) => {
+  const signup = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, role }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();

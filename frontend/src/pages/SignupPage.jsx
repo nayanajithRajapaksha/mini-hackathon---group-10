@@ -6,7 +6,6 @@ import '../styles/auth.css';
 const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('driver');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -17,7 +16,7 @@ const SignupPage = () => {
     setError('');
     setIsLoading(true);
 
-    const result = await signup(email, password, role);
+    const result = await signup(email, password);
     
     if (result.success) {
       navigate('/');
@@ -63,19 +62,7 @@ const SignupPage = () => {
             />
           </div>
 
-          <div className="input-group">
-            <label htmlFor="role">Account Type</label>
-            <select
-              id="role"
-              className="auth-select"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            >
-              <option value="driver">Driver (Find Parking)</option>
-              <option value="worker">Park Worker (Report Availability)</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
+          <p className="auth-note">New accounts are created as drivers. An administrator can assign worker access.</p>
           
           <button type="submit" className="auth-button" disabled={isLoading}>
             {isLoading ? 'Signing up...' : 'Sign Up'}
