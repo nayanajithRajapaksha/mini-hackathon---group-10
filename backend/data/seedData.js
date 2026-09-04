@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const bcrypt = require('bcrypt');
-
 const User = require('../models/User');
 const ParkingArea = require('../models/ParkingArea');
 const HistoricalPattern = require('../models/HistoricalPattern');
@@ -60,9 +58,6 @@ const seedData = async () => {
     console.log('Cleared existing data.');
 
     // 1. Seed Users
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash('password123', salt);
-    
     const users = await User.create([
       { email: 'admin@parkingpulse.lk', password: 'password123', role: 'admin' },
       { email: 'worker@parkingpulse.lk', password: 'password123', role: 'worker' },

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -23,17 +23,18 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Hash password before saving
-userSchema.pre('save', async function () {
+userSchema.pre('save', function (next) {
   if (!this.isModified('password')) {
-    return;
+    return next();
   }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  this.password = crypto.createHash('sha256').update(this.password).digest('hex');
+  next();
 });
 
 // Method to compare passwords
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  const enteredHash = crypto.createHash('sha256').update(enteredPassword).digest('hex');
+  return enteredHash === this.password;
 };
 
 module.exports = mongoose.model('User', userSchema);
