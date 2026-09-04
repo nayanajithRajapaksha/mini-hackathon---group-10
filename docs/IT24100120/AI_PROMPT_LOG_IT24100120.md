@@ -16,6 +16,7 @@ This document tracks AI prompts used by student **IT24100120** during the develo
 | 2026-09-04 | Role correction | Repair the reserved admin role and refresh server-authoritative sessions | OpenAI Codex | IT24100120 |
 | 2026-09-04 | Worker assignment | Add worker names to assignment dropdown and verify worker reporting flow | OpenAI Codex | IT24100120 |
 | 2026-09-04 | Worker login | Diagnose missing worker credentials and add non-destructive development bootstrap | OpenAI Codex | IT24100120 |
+| 2026-09-04 | Dashboard conflict | Resolve the latest WorkerDashboard merge conflict without weakening authentication | OpenAI Codex | IT24100120 |
 
 ---
 
@@ -264,3 +265,24 @@ cant loging for workers check it
 - Queried non-sensitive user metadata and confirmed that MongoDB contained only the administrator account.
 - Added a non-destructive development bootstrap that creates the documented worker account only when it is missing.
 - Kept production worker creation under administrator control unless explicit worker environment credentials are configured.
+
+---
+
+## Prompt 11
+
+- **Date and time:** 2026-09-04
+- **Tool:** OpenAI Codex
+- **Purpose:** Resolve the attached worker-dashboard conflict from the latest `main` branch.
+- **Team member using the tool:** IT24100120
+
+### Exact request
+
+The attached `pasted-text.txt` contained conflicting `IT24100120` and `main` implementations of `WorkerDashboard.jsx` and requested Codex to read and act on it.
+
+### Review and modification
+
+- Merged the latest `origin/main` and reproduced the WorkerDashboard conflict.
+- Retained the assigned-area availability-report CRUD workflow with loading, validation, and empty-assignment states.
+- Preserved the compatible backend restriction allowing workers to change only assigned parking areas.
+- Rejected insecure incoming changes that replaced signed JWTs and bcrypt with base64 tokens and unsalted SHA-256 password hashes.
+- Verified that the worker-area dropdown text renders correctly.

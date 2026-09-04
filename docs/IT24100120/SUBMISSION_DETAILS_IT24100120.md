@@ -38,6 +38,7 @@ Key contributions I completed:
 13. **Server-Authoritative Role Correction**: Added safe administrator bootstrapping, reserved-email protection, and session refresh so dashboard selection always follows the current database role rather than stale browser state.
 14. **Named Worker Assignment**: Extended user management with full names, displayed worker names and emails in the assignment dropdown, and improved worker reporting with assigned-area guidance and capacity validation.
 15. **Worker Login Reliability**: Diagnosed missing worker data in MongoDB and added a non-destructive development bootstrap for the documented worker credentials while retaining administrator-controlled account creation in production.
+16. **Secure Conflict Resolution**: Resolved the WorkerDashboard integration conflict while preserving assigned-area CRUD behavior, signed JWT authentication, and bcrypt password hashing.
 
 ## Validation
 
