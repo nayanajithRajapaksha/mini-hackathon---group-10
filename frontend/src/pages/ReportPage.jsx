@@ -145,11 +145,7 @@ function ReportPage() {
         at a parking area you have visited.
       </p>
 
-      {/* Demo data notice */}
-      <div className="report-notice">
-        <strong>Demo notice:</strong> This student prototype uses sample data.
-        Spaces are not reserved or guaranteed. Confirm availability when you arrive.
-      </div>
+
 
       {/* Success message */}
       {successMessage && (
