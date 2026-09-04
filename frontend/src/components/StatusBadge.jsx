@@ -1,24 +1,21 @@
 /**
  * StatusBadge Component
- * Renders a color-coded status badge for parking availability:
- * - 🟢 Available (Green)
- * - 🟡 Limited (Amber)
- * - 🔴 Full (Red)
+ * Renders an accessible, modern status badge with glowing status indicators:
+ * - Available (Emerald Green)
+ * - Limited (Amber/Orange)
+ * - Full (Coral Red)
  */
 function StatusBadge({ status }) {
-  const normalizedStatus = (status || 'Available').trim();
+  const normalizedStatus = (status || 'Available').trim().toLowerCase();
 
   let badgeClass = 'status-available';
-  let icon = '🟢';
   let label = 'Available';
 
-  if (normalizedStatus.toLowerCase() === 'full') {
+  if (normalizedStatus === 'full') {
     badgeClass = 'status-full';
-    icon = '🔴';
     label = 'Full';
-  } else if (normalizedStatus.toLowerCase() === 'limited') {
+  } else if (normalizedStatus === 'limited') {
     badgeClass = 'status-limited';
-    icon = '🟡';
     label = 'Limited';
   }
 
@@ -28,7 +25,7 @@ function StatusBadge({ status }) {
       role="status"
       aria-label={`Parking status: ${label}`}
     >
-      <span className="status-indicator" aria-hidden="true">{icon}</span>
+      <span className="status-dot" aria-hidden="true" />
       <span className="status-text">{label}</span>
     </span>
   );
