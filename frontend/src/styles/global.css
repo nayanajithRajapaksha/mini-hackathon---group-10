@@ -96,6 +96,9 @@ body {
   gap: 0.25rem;
 }
 
+.navbar-auth { margin-left:auto; }
+.user-menu,.guest-menu { display:flex; align-items:center; gap:.6rem; }
+
 .nav-link {
   display: inline-block;
   padding: 0.4rem 0.75rem;
@@ -279,6 +282,7 @@ body {
     width: 100%;
     justify-content: flex-start;
   }
+  .navbar-auth { margin-left:0; width:100%; }
 
   .main-content {
     padding: 1.25rem 0.75rem;

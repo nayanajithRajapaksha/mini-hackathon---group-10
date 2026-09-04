@@ -17,9 +17,11 @@ app.use(express.json());
 // Routes
 const authRoutes = require('./routes/authRoutes');
 const parkingRoutes = require('./routes/parkingRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api', parkingRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {

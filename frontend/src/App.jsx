@@ -4,11 +4,12 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import HomePage from './pages/HomePage.jsx';
-import PredictionPage from './pages/PredictionPage.jsx';
 import ParkingPage from './pages/ParkingPage.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
+import AdminDashboard from './pages/AdminDashboard.jsx';
+import WorkerDashboard from './pages/WorkerDashboard.jsx';
 
 function App() {
   return (
@@ -19,26 +20,27 @@ function App() {
         {/* Main content area with route switching */}
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/parking" element={<ParkingPage />} />
-            <Route path="/predict" element={<PredictionPage />} />
+            <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+            <Route path="/parking" element={<ProtectedRoute><ParkingPage /></ProtectedRoute>} />
             
             {/* Auth Routes */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/worker" element={<ProtectedRoute allowedRoles={['worker', 'admin']}><WorkerDashboard /></ProtectedRoute>} />
 
             {/* Protected Route for Reporting - Only for Admin & Worker */}
             <Route 
               path="/report" 
               element={
                 <ProtectedRoute allowedRoles={['admin', 'worker']}>
-                  <PlaceholderPage feature="Report Availability" />
+                  <WorkerDashboard />
                 </ProtectedRoute>
               } 
             />
 
             {/* Catch-all for unknown URLs */}
-            <Route path="*" element={<PlaceholderPage feature="Page Not Found" notFound />} />
+            <Route path="*" element={<ProtectedRoute><PlaceholderPage feature="Page Not Found" notFound /></ProtectedRoute>} />
           </Routes>
         </main>
 

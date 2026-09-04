@@ -11,6 +11,11 @@
   - `frontend/src/components/StatusBadge.jsx`
   - `frontend/src/styles/parking.css`
   - Route registration in `frontend/src/App.jsx`
+  - `frontend/src/pages/AdminDashboard.jsx`
+  - `frontend/src/pages/WorkerDashboard.jsx`
+  - `frontend/src/context/AuthContext.jsx`
+  - `backend/routes/adminRoutes.js`
+  - Role-protected parking operations in `backend/routes/parkingRoutes.js`
 
 ## Personal Contribution Statement (in Own Words)
 
@@ -22,3 +27,17 @@ Key contributions I completed:
 3. **Robust State Management**: Added complete loading, error handling with retry capability, and empty-state messaging when no parking locations match the query.
 4. **Responsive Styling**: Designed and tested `parking.css` ensuring smooth responsiveness across mobile viewports (375px) up to large desktop screens (1440px) without horizontal scrolling.
 5. **Testing & Validation**: Validated the component against live API calls and verified that status indicators accurately represent the occupancy percentages defined in the master plan.
+
+6. **Authentication and Role Protection**: Implemented login-first application access with JWT authentication and protected routes for drivers, workers, and administrators. Public sign-up creates driver accounts only, preventing unauthorized self-registration as a worker or administrator.
+7. **Administrator CRUD Dashboard**: Implemented create, read, update, and delete operations for parking areas and user accounts. Administrators can create worker accounts, change roles, update capacity information, and safely remove records.
+8. **Parking Worker Assignment**: Added support for assigning multiple workers to individual parking areas. Assignment checks are enforced by the backend so a worker cannot change availability for an unassigned parking area by bypassing the user interface.
+9. **Worker CRUD Dashboard**: Implemented availability-report CRUD operations. Workers see only assigned parking areas, can submit current available-space counts, edit their reports, add observation notes, and delete their own reports.
+10. **Prediction Feature Removal**: Removed prediction routes, UI components, styles, API calls, database model usage, and seed generation because prediction is outside the final project scope.
+11. **Admin Form Usability**: Refined the parking-area editor with compact, consistently sized fields, visible input labels, helpful examples, a standard worker-assignment dropdown, and responsive layouts.
+
+## Validation
+
+- Frontend production build: `npm run build`
+- Backend route syntax validation: `node --check`
+- Responsive dashboard layouts included for desktop and mobile use.
+- Final implementation and documentation delivered through the `IT24100120` Git branch.

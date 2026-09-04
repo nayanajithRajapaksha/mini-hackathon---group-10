@@ -150,7 +150,7 @@ function ParkingPage() {
           </svg>
         </div>
         <p>
-          <strong>Demo Notice:</strong> Parking availability and predictions in this student
+          <strong>Demo Notice:</strong> Parking availability in this student
           prototype use sample and community-reported information. Spaces are not reserved or
           guaranteed. Confirm availability when you arrive.
         </p>
