@@ -14,6 +14,8 @@
 .dashboard-field { display:flex; flex-direction:column; gap:.4rem; color:#1a2e5a; font-weight:650; font-size:.9rem; }
 .dashboard-field small,.form-help { color:#64748b; font-size:.82rem; font-weight:400; }
 .form-help { margin-top:.8rem; }
+.area-selector { max-width:520px; margin-bottom:1rem; }
+.selection-placeholder { padding:1rem; border:1px dashed #94a3b8; border-radius:8px; background:#f8fafc; color:#64748b; }
 .form-actions { display:flex; gap:.65rem; margin-top:1rem; }
 .table-wrap { overflow-x:auto; background:#fff; border:1px solid #e2e8f0; border-radius:12px; }
 .table-wrap table { width:100%; border-collapse:collapse; }

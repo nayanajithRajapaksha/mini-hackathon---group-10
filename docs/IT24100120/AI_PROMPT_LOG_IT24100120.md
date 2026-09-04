@@ -17,6 +17,9 @@ This document tracks AI prompts used by student **IT24100120** during the develo
 | 2026-09-04 | Worker assignment | Add worker names to assignment dropdown and verify worker reporting flow | OpenAI Codex | IT24100120 |
 | 2026-09-04 | Worker login | Diagnose missing worker credentials and add non-destructive development bootstrap | OpenAI Codex | IT24100120 |
 | 2026-09-04 | Dashboard conflict | Resolve the latest WorkerDashboard merge conflict without weakening authentication | OpenAI Codex | IT24100120 |
+| 2026-09-04 | Area dropdowns | Replace parking name and location inputs with paired dropdown lists | OpenAI Codex | IT24100120 |
+| 2026-09-04 | Area workflows | Separate parking creation and update forms with one-to-one worker assignment | OpenAI Codex | IT24100120 |
+| 2026-09-04 | Empty area state | Bootstrap missing parking data and clarify the update-area selection state | OpenAI Codex | IT24100120 |
 
 ---
 
@@ -286,3 +289,70 @@ The attached `pasted-text.txt` contained conflicting `IT24100120` and `main` imp
 - Preserved the compatible backend restriction allowing workers to change only assigned parking areas.
 - Rejected insecure incoming changes that replaced signed JWTs and bcrypt with base64 tokens and unsalted SHA-256 password hashes.
 - Verified that the worker-area dropdown text renders correctly.
+
+---
+
+## Prompt 12
+
+- **Date and time:** 2026-09-04
+- **Tool:** OpenAI Codex
+- **Purpose:** Improve parking-area creation with controlled name and location dropdowns.
+- **Team member using the tool:** IT24100120
+
+### Exact prompt
+
+```text
+i want drop down list for these as well
+```
+
+### Review and modification
+
+- Replaced the parking-area name and location text inputs with dropdown lists.
+- Added known Kandy parking names and corresponding locations.
+- Synchronized both dropdowns so selecting a name automatically chooses its correct location and selecting a location chooses its matching name.
+- Preserved existing custom values while editing older parking-area records.
+
+---
+
+## Prompt 13
+
+- **Date and time:** 2026-09-04
+- **Tool:** OpenAI Codex
+- **Purpose:** Separate administrator parking creation and update workflows and enforce exclusive worker assignments.
+- **Team member using the tool:** IT24100120
+
+### Exact prompt
+
+```text
+put this as a admin update area and i need extra one to create a new car parking and assign workers for them , only one worker must have one parking
+```
+
+### Review and modification
+
+- Added an `Update parking area` form with an existing-area dropdown.
+- Added a separate `Create new parking area` form with custom name, location, capacity, availability, and worker fields.
+- Filtered worker dropdowns so already assigned workers cannot be selected for another parking area.
+- Enforced one worker per parking area and one parking area per worker in backend validation.
+- Updated seed data to follow the one-to-one assignment rule.
+
+---
+
+## Prompt 14
+
+- **Date and time:** 2026-09-04
+- **Tool:** OpenAI Codex
+- **Purpose:** Correct the empty existing-area dropdown and confusing disabled update fields.
+- **Team member using the tool:** IT24100120
+
+### Exact prompt
+
+```text
+it didnt shows the current parking areas and below there are some empty box what is that?
+```
+
+### Review and modification
+
+- Identified that the driver page was showing fallback examples while MongoDB contained no actual parking areas.
+- Added non-destructive startup creation of standard parking areas only when the parking collection is empty.
+- Assigned the development worker to one default area while preserving the one-to-one rule.
+- Replaced disabled empty update fields with a clear instruction until an existing area is selected.
