@@ -1,4 +1,12 @@
-/* ParkingPulse LK - Base Styles */
+/* ===================================================
+   ParkingPulse LK - Global Styles
+   Colour palette:
+     Primary (deep blue):  #1a2e5a
+     Secondary (teal):     #0e918c
+     Accent (amber):       #f6a623
+     Background (light):   #f4f5f7
+     Text:                 #2d2d2d
+   =================================================== */
 
 /* Reset and box-sizing */
 *,
@@ -16,32 +24,183 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f5f5;
-  color: #333;
+  background-color: #f4f5f7;
+  color: #2d2d2d;
   line-height: 1.6;
 }
 
-/* App container */
+/* App layout — full height with sticky footer */
 .app-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* ---- Navbar ---- */
+.navbar {
+  background-color: #1a2e5a;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-/* App header */
-.app-header {
+.navbar-brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar-brand:hover {
+  color: #f6a623;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 0.4rem 0.75rem;
+  color: #cfd8e8;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+/* Active navigation link */
+.nav-link.active {
+  background-color: #0e918c;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Visible keyboard focus */
+.nav-link:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid #f6a623;
+  outline-offset: 2px;
+}
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-block;
+  padding: 0.65rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
   text-align: center;
+  transition: background-color 0.2s, transform 0.1s;
 }
 
-.app-header h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  color: #1a1a2e;
+.btn:active {
+  transform: scale(0.98);
 }
 
-.app-header p {
-  font-size: 1.1rem;
+.btn-primary {
+  background-color: #0e918c;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #0a7974;
+}
+
+.btn-secondary {
+  background-color: #f6a623;
+  color: #1a2e5a;
+}
+
+.btn-secondary:hover {
+  background-color: #e5951a;
+}
+
+/* ---- Footer ---- */
+.footer {
+  background-color: #1a2e5a;
+  color: #cfd8e8;
+  text-align: center;
+  padding: 1.25rem 1rem;
+  margin-top: auto;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.footer-brand {
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.footer-course {
+  font-size: 0.85rem;
+}
+
+/* ---- Placeholder page ---- */
+.placeholder-page {
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.placeholder-page h1 {
+  font-size: 1.75rem;
+  color: #1a2e5a;
+  margin-bottom: 0.75rem;
+}
+
+.placeholder-page p {
+  margin-bottom: 1.5rem;
   color: #555;
+}
+
+/* ---- Responsive: small screens ---- */
+@media (max-width: 640px) {
+  .navbar-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-links {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .main-content {
+    padding: 1.25rem 0.75rem;
+  }
 }
