@@ -171,15 +171,7 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Disclaimer notice */}
-      <section className="disclaimer" aria-label="Important notice">
-        <p>
-          <strong>Notice:</strong> This is a student prototype built for the
-          SE3090 Mini Hackathon. Information shown is based on demonstration data
-          and community-reported updates. Parking spaces are not reserved or
-          guaranteed. Always confirm availability on arrival.
-        </p>
-      </section>
+
     </div>
   );
 }

@@ -1,14 +1,11 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const router = express.Router();
 
-// Generate JWT
+// Generate Mock JWT using base64 encoding (hackathon simplified)
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
-  });
+  return Buffer.from(JSON.stringify({ id })).toString('base64');
 };
 
 // @desc    Register new user
