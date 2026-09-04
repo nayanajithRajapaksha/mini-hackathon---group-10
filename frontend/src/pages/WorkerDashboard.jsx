@@ -1,23 +1,130 @@
 import { useEffect, useState } from 'react';
-import { createParkingUpdate, deleteParkingUpdate, getParkingAreas, getParkingUpdates, updateParkingUpdate } from '../services/api';
+import { getParkingAreas, updateParkingArea } from '../services/api';
 import '../styles/dashboard.css';
 
-const empty = { areaId: '', availableSpaces: '', note: '' };
+const emptyForm = { availableSpaces: '', note: '' };
+
 export default function WorkerDashboard() {
-  const [areas,setAreas]=useState([]), [updates,setUpdates]=useState([]), [form,setForm]=useState(empty);
-  const [editing,setEditing]=useState(null), [message,setMessage]=useState('');
-  const load=async()=>{try{const [a,u]=await Promise.all([getParkingAreas(),getParkingUpdates()]);setAreas(a);setUpdates(u);}catch(e){setMessage(e.message)}};
-  useEffect(()=>{load()},[]);
-  const submit=async(e)=>{e.preventDefault();try{const payload={...form,availableSpaces:Number(form.availableSpaces)};if(editing)await updateParkingUpdate(editing,payload);else await createParkingUpdate(payload);setForm(empty);setEditing(null);setMessage('Availability report saved.');await load()}catch(e){setMessage(e.message)}};
-  const remove=async(id)=>{if(!window.confirm('Delete this availability report?'))return;try{await deleteParkingUpdate(id);setMessage('Report deleted.');await load()}catch(e){setMessage(e.message)}};
-  return <section className="management-page"><header className="management-header"><div><p className="eyebrow">Operations</p><h1>Worker dashboard</h1><p>Create and manage parking availability reports.</p></div></header>
-    {message&&<div className="dashboard-message" role="status">{message}</div>}
-    <form className="management-form" onSubmit={submit}><h2>{editing?'Edit report':'New availability report'}</h2><div className="form-row">
-      <select value={form.areaId} onChange={e=>setForm({...form,areaId:e.target.value})} required><option value="">Select parking area</option>{areas.map(a=><option key={a._id} value={a._id}>{a.name} (max {a.totalSpaces})</option>)}</select>
-      <input type="number" min="0" placeholder="Available spaces" value={form.availableSpaces} onChange={e=>setForm({...form,availableSpaces:e.target.value})} required />
-      <input placeholder="Observation note" value={form.note} onChange={e=>setForm({...form,note:e.target.value})} />
-    </div><div className="form-actions"><button className="btn btn-primary">{editing?'Update report':'Submit report'}</button>{editing&&<button type="button" className="btn btn-outline" onClick={()=>{setEditing(null);setForm(empty)}}>Cancel</button>}</div></form>
-    <div className="report-grid">{updates.map(u=><article className="report-card" key={u._id}><div><h3>{u.areaId?.name||'Deleted area'}</h3><p><strong>{u.availableSpaces}</strong> spaces available</p><small>{new Date(u.observationTime).toLocaleString()}</small>{u.note&&<p className="report-note">{u.note}</p>}</div><div className="row-actions"><button className="action-edit" onClick={()=>{setEditing(u._id);setForm({areaId:u.areaId?._id||'',availableSpaces:u.availableSpaces,note:u.note||''})}}>Edit</button><button className="action-delete" onClick={()=>remove(u._id)}>Delete</button></div></article>)}</div>
-    {!updates.length&&<p className="empty-table">No reports yet. Add your first availability report above.</p>}
-  </section>;
+  const [areas, setAreas] = useState([]);
+  const [form, setForm] = useState(emptyForm);
+  const [editing, setEditing] = useState(null);
+  const [message, setMessage] = useState('');
+
+  const load = async () => {
+    try {
+      const data = await getParkingAreas();
+      setAreas(data);
+    } catch (e) {
+      setMessage(e.message);
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const submit = async (e) => {
+    e.preventDefault();
+    try {
+      const payload = {
+        availableSpaces: Number(form.availableSpaces),
+        note: form.note,
+      };
+      await updateParkingArea(editing._id, payload);
+      setForm(emptyForm);
+      setEditing(null);
+      setMessage('Parking area updated successfully.');
+      await load();
+    } catch (e) {
+      setMessage(e.message);
+    }
+  };
+
+  const handleEdit = (area) => {
+    setEditing(area);
+    setForm({
+      availableSpaces: area.availableSpaces,
+      note: area.note || '',
+    });
+    setMessage('');
+  };
+
+  const cancelEdit = () => {
+    setEditing(null);
+    setForm(emptyForm);
+    setMessage('');
+  };
+
+  return (
+    <section className="management-page">
+      <header className="management-header">
+        <div>
+          <p className="eyebrow">Operations</p>
+          <h1>Worker Dashboard</h1>
+          <p>Manage parking availability for your assigned areas.</p>
+        </div>
+      </header>
+      
+      {message && <div className="dashboard-message" role="status">{message}</div>}
+
+      {editing && (
+        <form className="management-form" onSubmit={submit}>
+          <h2>Update Area: {editing.name}</h2>
+          <p style={{ marginBottom: '1rem', color: '#666' }}>
+            Total capacity: {editing.totalSpaces} spaces
+          </p>
+          <div className="form-row">
+            <input
+              type="number"
+              min="0"
+              max={editing.totalSpaces}
+              placeholder="Available spaces"
+              value={form.availableSpaces}
+              onChange={(e) => setForm({ ...form, availableSpaces: e.target.value })}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Observation note (optional)"
+              value={form.note}
+              onChange={(e) => setForm({ ...form, note: e.target.value })}
+            />
+          </div>
+          <div className="form-actions">
+            <button type="submit" className="btn btn-primary">Update availability</button>
+            <button type="button" className="btn btn-outline" onClick={cancelEdit}>Cancel</button>
+          </div>
+        </form>
+      )}
+
+      <div className="report-grid">
+        {areas.map((area) => (
+          <article className="report-card" key={area._id}>
+            <div>
+              <h3>{area.name}</h3>
+              <p>{area.location}</p>
+              <p style={{ marginTop: '0.5rem' }}>
+                <strong>{area.availableSpaces}</strong> / {area.totalSpaces} spaces available
+              </p>
+              <small>Last updated: {new Date(area.lastUpdated).toLocaleString()}</small>
+              {area.note && <p className="report-note">{area.note}</p>}
+            </div>
+            <div className="row-actions">
+              <button
+                className="action-edit"
+                onClick={() => handleEdit(area)}
+                disabled={editing && editing._id === area._id}
+              >
+                Update Spaces
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+      
+      {!areas.length && (
+        <p className="empty-table">No parking areas are currently assigned to you.</p>
+      )}
+    </section>
+  );
 }

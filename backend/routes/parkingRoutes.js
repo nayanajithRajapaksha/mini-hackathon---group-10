@@ -33,13 +33,23 @@ router.post('/parking-areas', protect, authorizeRoles('admin'), async (req, res)
   }
 });
 
-router.put('/parking-areas/:id', protect, authorizeRoles('admin'), async (req, res) => {
+router.put('/parking-areas/:id', protect, authorizeRoles('admin', 'worker'), async (req, res) => {
   try {
     const area = await ParkingArea.findById(req.params.id);
     if (!area) return res.status(404).json({ status: 'error', message: 'Parking area not found' });
-    ['name', 'location', 'totalSpaces', 'availableSpaces', 'assignedWorkers'].forEach((field) => {
+    
+    if (req.user.role === 'worker' && !area.assignedWorkers.some(id => id.equals(req.user._id))) {
+      return res.status(403).json({ status: 'error', message: 'You are not assigned to this parking area' });
+    }
+
+    const updatableFields = req.user.role === 'admin' 
+      ? ['name', 'location', 'totalSpaces', 'availableSpaces', 'assignedWorkers', 'note']
+      : ['availableSpaces', 'note'];
+
+    updatableFields.forEach((field) => {
       if (req.body[field] !== undefined) area[field] = req.body[field];
     });
+    
     await area.save();
     res.json({ status: 'success', data: area });
   } catch (error) {
