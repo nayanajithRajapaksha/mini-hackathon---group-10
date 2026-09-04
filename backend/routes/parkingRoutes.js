@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const ParkingArea = require('../models/ParkingArea');
-
 // GET /api/parking-areas — return all parking areas
 router.get('/', async (req, res) => {
   try {

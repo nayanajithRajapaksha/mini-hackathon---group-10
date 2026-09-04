@@ -8,6 +8,7 @@ const connectDB = require('./config/db');
 const seedDatabase = require('./data/seedData');
 
 // Import route files
+const authRoutes = require('./routes/authRoutes');
 const parkingRoutes = require('./routes/parkingRoutes');
 const updateRoutes = require('./routes/updateRoutes');
 const predictionRoutes = require('./routes/predictionRoutes');
@@ -20,6 +21,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Routes
+app.use('/api/auth', authRoutes);
+
 // Health check route
 app.get('/api/health', (req, res) => {
   const isConnected = mongoose.connection.readyState === 1;
@@ -31,6 +35,8 @@ app.get('/api/health', (req, res) => {
 });
 
 // API routes
+// Note: We are using individual route files for Member 3's implementation
+// to preserve the tested frontend behavior.
 app.use('/api/parking-areas', parkingRoutes);
 app.use('/api/parking-updates', updateRoutes);
 app.use('/api/predictions', predictionRoutes);
@@ -50,7 +56,7 @@ const startServer = async () => {
     // Seed sample data only if collections are empty
     await seedDatabase();
     app.listen(PORT, () => {
-      console.log(`ParkingPulse LK server running on port ${PORT}`);
+      console.log(`ParkingPulse LK server running at http://localhost:${PORT}`);
     });
   } catch (error) {
     console.error('Server startup failed:', error.message);

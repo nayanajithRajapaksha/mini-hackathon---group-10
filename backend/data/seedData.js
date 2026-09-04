@@ -1,53 +1,17 @@
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const bcrypt = require('bcrypt');
+
+const User = require('../models/User');
 const ParkingArea = require('../models/ParkingArea');
 const HistoricalPattern = require('../models/HistoricalPattern');
+const connectDB = require('../config/db');
 
-// Four demo parking areas in Kandy city centre
-const parkingAreas = [
-  {
-    parkingId: 'P001',
-    name: 'KCC Demo Parking Area A',
-    location: 'Dalada Veediya area, Kandy',
-    totalSpaces: 20,
-    availableSpaces: 8,
-    status: 'Available',
-    lastUpdated: new Date('2026-09-04T08:15:00.000Z'),
-    note: 'Spaces reported near the main entrance.',
-  },
-  {
-    parkingId: 'P002',
-    name: 'Municipal Demo Parking Area B',
-    location: 'Municipal Council area, Kandy',
-    totalSpaces: 24,
-    availableSpaces: 0,
-    status: 'Full',
-    lastUpdated: new Date('2026-09-04T07:45:00.000Z'),
-    note: 'All spaces occupied during morning rush.',
-  },
-  {
-    parkingId: 'P003',
-    name: 'Bogambara Demo Parking Area C',
-    location: 'Bogambara area, Kandy',
-    totalSpaces: 20,
-    availableSpaces: 2,
-    status: 'Limited',
-    lastUpdated: new Date('2026-09-04T08:00:00.000Z'),
-    note: 'Only a few spaces left near the exit.',
-  },
-  {
-    parkingId: 'P004',
-    name: 'Clock Tower Demo Parking Area D',
-    location: 'Clock Tower area, Kandy',
-    totalSpaces: 18,
-    availableSpaces: 6,
-    status: 'Available',
-    lastUpdated: new Date('2026-09-04T07:30:00.000Z'),
-    note: 'Spaces available on the upper level.',
-  },
-];
+dotenv.config();
 
-// Historical sample patterns for predictions (4 samples each)
-const historicalPatterns = [
-  // P001 — KCC Demo Parking Area A (total: 20)
+// Member 3's Historical sample patterns for predictions (4 samples each)
+const historicalPatternsData = [
+  // P001
   { parkingId: 'P001', dayType: 'Weekday', timeSlot: 'Morning', samples: [7, 9, 8, 10] },
   { parkingId: 'P001', dayType: 'Weekday', timeSlot: 'Midday', samples: [3, 4, 2, 5] },
   { parkingId: 'P001', dayType: 'Weekday', timeSlot: 'Evening', samples: [6, 8, 7, 5] },
@@ -55,7 +19,7 @@ const historicalPatterns = [
   { parkingId: 'P001', dayType: 'Weekend', timeSlot: 'Midday', samples: [5, 6, 4, 7] },
   { parkingId: 'P001', dayType: 'Weekend', timeSlot: 'Evening', samples: [9, 10, 8, 11] },
 
-  // P002 — Municipal Demo Parking Area B (total: 24)
+  // P002
   { parkingId: 'P002', dayType: 'Weekday', timeSlot: 'Morning', samples: [2, 3, 1, 4] },
   { parkingId: 'P002', dayType: 'Weekday', timeSlot: 'Midday', samples: [0, 1, 0, 2] },
   { parkingId: 'P002', dayType: 'Weekday', timeSlot: 'Evening', samples: [5, 4, 6, 3] },
@@ -63,7 +27,7 @@ const historicalPatterns = [
   { parkingId: 'P002', dayType: 'Weekend', timeSlot: 'Midday', samples: [3, 4, 2, 5] },
   { parkingId: 'P002', dayType: 'Weekend', timeSlot: 'Evening', samples: [7, 8, 6, 9] },
 
-  // P003 — Bogambara Demo Parking Area C (total: 20)
+  // P003
   { parkingId: 'P003', dayType: 'Weekday', timeSlot: 'Morning', samples: [5, 6, 4, 7] },
   { parkingId: 'P003', dayType: 'Weekday', timeSlot: 'Midday', samples: [1, 2, 0, 3] },
   { parkingId: 'P003', dayType: 'Weekday', timeSlot: 'Evening', samples: [4, 5, 3, 6] },
@@ -71,7 +35,7 @@ const historicalPatterns = [
   { parkingId: 'P003', dayType: 'Weekend', timeSlot: 'Midday', samples: [2, 3, 1, 4] },
   { parkingId: 'P003', dayType: 'Weekend', timeSlot: 'Evening', samples: [6, 7, 5, 8] },
 
-  // P004 — Clock Tower Demo Parking Area D (total: 18)
+  // P004
   { parkingId: 'P004', dayType: 'Weekday', timeSlot: 'Morning', samples: [6, 7, 5, 8] },
   { parkingId: 'P004', dayType: 'Weekday', timeSlot: 'Midday', samples: [2, 3, 1, 4] },
   { parkingId: 'P004', dayType: 'Weekday', timeSlot: 'Evening', samples: [5, 6, 4, 7] },
@@ -80,32 +44,86 @@ const historicalPatterns = [
   { parkingId: 'P004', dayType: 'Weekend', timeSlot: 'Evening', samples: [7, 8, 6, 9] },
 ];
 
-/**
- * Seed the database with sample data only if collections are empty.
- * This prevents duplicates after server restarts.
- */
-async function seedDatabase() {
+const seedData = async () => {
   try {
-    // Check if parking areas already exist
-    const areaCount = await ParkingArea.countDocuments();
-    if (areaCount === 0) {
-      await ParkingArea.insertMany(parkingAreas);
-      console.log('Seeded parking areas: 4 demo records');
-    } else {
-      console.log(`Parking areas already exist (${areaCount} records) — skipping seed`);
+    // connectDB() is handled outside or we connect directly
+    const uri = process.env.MONGODB_URI;
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(uri);
     }
 
-    // Check if historical patterns already exist
-    const patternCount = await HistoricalPattern.countDocuments();
-    if (patternCount === 0) {
-      await HistoricalPattern.insertMany(historicalPatterns);
-      console.log('Seeded historical patterns: 24 demo records');
-    } else {
-      console.log(`Historical patterns already exist (${patternCount} records) — skipping seed`);
+    // Clear existing data
+    await User.deleteMany();
+    await ParkingArea.deleteMany();
+    await HistoricalPattern.deleteMany();
+
+    console.log('Cleared existing data.');
+
+    // 1. Seed Users
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash('password123', salt);
+    
+    const users = await User.create([
+      { email: 'admin@parkingpulse.lk', password: 'password123', role: 'admin' },
+      { email: 'worker@parkingpulse.lk', password: 'password123', role: 'worker' },
+      { email: 'driver@parkingpulse.lk', password: 'password123', role: 'driver' },
+    ]);
+
+    console.log('Seeded Users.');
+
+    // 2. Seed Parking Areas (with Member 3's required parkingId)
+    const parkingAreas = await ParkingArea.create([
+      { parkingId: 'P001', name: 'KCC Main Parking', location: 'Dalada Veediya, Kandy', totalSpaces: 100, availableSpaces: 20 },
+      { parkingId: 'P002', name: 'Bogambara Public Parking', location: 'Bogambara, Kandy', totalSpaces: 200, availableSpaces: 150 },
+      { parkingId: 'P003', name: 'Lake Round Street Parking', location: 'Lake Round, Kandy', totalSpaces: 50, availableSpaces: 2 },
+      { parkingId: 'P004', name: 'Getambe Temple Parking', location: 'Getambe, Peradeniya Road', totalSpaces: 80, availableSpaces: 15 },
+    ]);
+
+    console.log('Seeded Parking Areas.');
+
+    // 3. Seed Historical Patterns
+    const patterns = [];
+    for (let area of parkingAreas) {
+      for (let day = 0; day <= 6; day++) {
+        patterns.push({
+          parkingId: area.parkingId,
+          dayType: day === 0 || day === 6 ? 'Weekend' : 'Weekday',
+          timeSlot: 'Morning',
+          samples: [1, 2, 3],
+          areaId: area._id,
+          dayOfWeek: day,
+          hour: 8,
+          averageAvailability: Math.floor(Math.random() * area.totalSpaces * 0.8)
+        });
+        patterns.push({
+          parkingId: area.parkingId,
+          dayType: day === 0 || day === 6 ? 'Weekend' : 'Weekday',
+          timeSlot: 'Evening',
+          samples: [1, 2, 3],
+          areaId: area._id,
+          dayOfWeek: day,
+          hour: 17,
+          averageAvailability: Math.floor(Math.random() * area.totalSpaces * 0.3)
+        });
+      }
+    }
+    
+    // Add Member 3's historical patterns directly
+    await HistoricalPattern.insertMany(historicalPatternsData);
+    await HistoricalPattern.insertMany(patterns);
+
+    console.log('Seeded Historical Patterns.');
+
+    console.log('Data seeding completed successfully!');
+    if (require.main === module) {
+      process.exit();
     }
   } catch (error) {
-    console.error('Seed data error:', error.message);
+    console.error('Error seeding data:', error);
+    if (require.main === module) {
+      process.exit(1);
+    }
   }
-}
+};
 
-module.exports = seedDatabase;
+module.exports = seedData;
