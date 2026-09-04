@@ -4,6 +4,7 @@ import Footer from './components/Footer.jsx';
 import HomePage from './pages/HomePage.jsx';
 import PredictionPage from './pages/PredictionPage.jsx';
 import ParkingPage from './pages/ParkingPage.jsx';
+import ReportPage from './pages/ReportPage.jsx';
 import PlaceholderPage from './pages/PlaceholderPage.jsx';
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/parking" element={<ParkingPage />} />
-          <Route path="/report" element={<PlaceholderPage feature="Report Availability" />} />
+          <Route path="/report" element={<ReportPage />} />
           <Route path="/predict" element={<PredictionPage />} />
 
           {/* Catch-all for unknown URLs */}

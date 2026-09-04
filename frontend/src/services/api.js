@@ -40,3 +40,25 @@ export async function getPrediction(parkingId, dayType, timeSlot) {
 
   return body.data;
 }
+
+/**
+ * Submit a parking availability update to the backend.
+ * Returns the full response body (success, message, errors, data).
+ */
+export async function submitParkingUpdate(updateData) {
+  try {
+    const response = await fetch('/api/parking-updates', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updateData),
+    });
+
+    const body = await response.json();
+    return body;
+  } catch (error) {
+    return {
+      success: false,
+      message: 'Unable to connect to the server. Please check your connection and try again.',
+    };
+  }
+}

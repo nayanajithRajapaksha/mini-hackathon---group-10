@@ -5,6 +5,12 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
+const seedDatabase = require('./data/seedData');
+
+// Import route files
+const parkingRoutes = require('./routes/parkingRoutes');
+const updateRoutes = require('./routes/updateRoutes');
+const predictionRoutes = require('./routes/predictionRoutes');
 
 // Create Express app
 const app = express();
@@ -24,6 +30,11 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// API routes
+app.use('/api/parking-areas', parkingRoutes);
+app.use('/api/parking-updates', updateRoutes);
+app.use('/api/predictions', predictionRoutes);
+
 // 404 handler for unknown API routes
 app.use('/api/*path', (req, res) => {
   res.status(404).json({
@@ -36,6 +47,8 @@ app.use('/api/*path', (req, res) => {
 const startServer = async () => {
   try {
     await connectDB();
+    // Seed sample data only if collections are empty
+    await seedDatabase();
     app.listen(PORT, () => {
       console.log(`ParkingPulse LK server running on port ${PORT}`);
     });
