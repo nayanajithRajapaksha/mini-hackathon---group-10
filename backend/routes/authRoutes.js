@@ -13,7 +13,7 @@ const generateToken = (id) => {
 // @access  Public
 router.post('/register', async (req, res) => {
   try {
-    const { email, password, role } = req.body;
+    const { email, password } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({ status: 'error', message: 'Please add all fields' });
@@ -30,7 +30,7 @@ router.post('/register', async (req, res) => {
     const user = await User.create({
       email,
       password,
-      role: role || 'driver', // default to driver
+      role: 'driver',
     });
 
     if (user) {
@@ -58,6 +58,10 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({ status: 'error', message: 'Email and password are required' });
+    }
+
     // Check for user email
     const user = await User.findOne({ email });
 
@@ -77,6 +81,12 @@ router.post('/login', async (req, res) => {
   } catch (error) {
     res.status(500).json({ status: 'error', message: error.message });
   }
+});
+
+const { protect } = require('../middleware/authMiddleware');
+
+router.get('/me', protect, async (req, res) => {
+  res.json({ status: 'success', data: req.user });
 });
 
 module.exports = router;

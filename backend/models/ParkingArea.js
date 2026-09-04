@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const parkingAreaSchema = new mongoose.Schema({
   parkingId: {
     type: String,
-    required: true,
     unique: true,
+    sparse: true,
+    trim: true,
   },
   name: {
     type: String,
@@ -21,13 +22,17 @@ const parkingAreaSchema = new mongoose.Schema({
   availableSpaces: {
     type: Number,
     required: true,
-    default: 0,
+    min: 0,
   },
   status: {
     type: String,
     enum: ['Available', 'Limited', 'Full'],
     default: 'Available',
   },
+  assignedWorkers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  }],
   lastUpdated: {
     type: Date,
     default: Date.now,
@@ -35,11 +40,14 @@ const parkingAreaSchema = new mongoose.Schema({
   note: {
     type: String,
     default: '',
-  },
+  }
 }, { timestamps: true });
 
 // Middleware to automatically update status based on available spaces
 parkingAreaSchema.pre('save', function () {
+  if (this.totalSpaces < 1 || this.availableSpaces > this.totalSpaces) {
+    throw new Error('Available spaces must be between 0 and total spaces');
+  }
   const percentage = (this.availableSpaces / this.totalSpaces) * 100;
   if (percentage <= 5) {
     this.status = 'Full';
@@ -48,6 +56,7 @@ parkingAreaSchema.pre('save', function () {
   } else {
     this.status = 'Available';
   }
+  if (this.isModified('availableSpaces')) this.lastUpdated = new Date();
 });
 
 module.exports = mongoose.model('ParkingArea', parkingAreaSchema);

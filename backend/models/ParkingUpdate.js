@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const parkingUpdateSchema = new mongoose.Schema({
   parkingId: {
     type: String,
-    required: true,
+    required: false,
   },
   availableSpaces: {
     type: Number,
@@ -11,7 +11,7 @@ const parkingUpdateSchema = new mongoose.Schema({
   },
   observedAt: {
     type: Date,
-    required: true,
+    default: Date.now,
   },
   note: {
     type: String,

@@ -141,7 +141,6 @@ function ParkingPage() {
       </header>
 
 
-
       {/* Search, Filter, and Sort Controls */}
       <section className="parking-controls-card" aria-label="Search and filter parking areas">
         <div className="parking-controls-grid">
