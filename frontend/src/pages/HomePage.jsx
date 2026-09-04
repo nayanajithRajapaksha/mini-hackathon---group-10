@@ -1,8 +1,41 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { getParkingAreas } from '../services/api.js';
 import '../styles/home.css';
 
-/* Home page with hero section, feature cards, and disclaimer */
+/* Home page with hero, dashboard summary, feature cards, and disclaimer */
 function HomePage() {
+  const [areas, setAreas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Load parking areas when the page mounts
+  const fetchAreas = () => {
+    setLoading(true);
+    setError(null);
+    getParkingAreas()
+      .then((data) => {
+        setAreas(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchAreas();
+  }, []);
+
+  // Calculate dashboard totals from the loaded data
+  const totalAreas = areas.length;
+  const totalCapacity = areas.reduce((sum, a) => sum + (a.totalSpaces || 0), 0);
+  const totalAvailable = areas.reduce((sum, a) => sum + (a.availableSpaces || 0), 0);
+  const fullAreas = areas.filter(
+    (a) => a.status === 'Full' || a.availableSpaces === 0
+  ).length;
+
   return (
     <div className="home-page">
 
@@ -35,6 +68,59 @@ function HomePage() {
             Predict Availability
           </Link>
         </div>
+      </section>
+
+      {/* Parking summary dashboard */}
+      <section className="dashboard" aria-label="Parking summary">
+        <h2 className="dashboard-heading">Parking Summary</h2>
+
+        {loading && (
+          <p className="dashboard-loading">Loading parking data...</p>
+        )}
+
+        {error && (
+          <div className="dashboard-error" role="alert">
+            <p>{error}</p>
+            <button className="btn btn-primary" onClick={fetchAreas} type="button">
+              Retry
+            </button>
+          </div>
+        )}
+
+        {!loading && !error && totalAreas === 0 && (
+          <p className="dashboard-empty">
+            No parking areas found. Data may not be available yet.
+          </p>
+        )}
+
+        {!loading && !error && totalAreas > 0 && (
+          <>
+            <div className="summary-grid">
+              <div className="summary-card">
+                <span className="summary-value">{totalAreas}</span>
+                <span className="summary-label">Parking Areas</span>
+              </div>
+              <div className="summary-card">
+                <span className="summary-value">{totalCapacity}</span>
+                <span className="summary-label">Total Capacity</span>
+              </div>
+              <div className="summary-card">
+                <span className="summary-value">{totalAvailable}</span>
+                <span className="summary-label">Available Now</span>
+              </div>
+              <div className="summary-card">
+                <span className="summary-value">{fullAreas}</span>
+                <span className="summary-label">Full Areas</span>
+              </div>
+            </div>
+
+            <div className="dashboard-action">
+              <Link to="/parking" className="btn btn-primary">
+                View All Parking Areas
+              </Link>
+            </div>
+          </>
+        )}
       </section>
 
       {/* Feature cards */}

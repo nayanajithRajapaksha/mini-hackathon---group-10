@@ -39,6 +39,74 @@
   flex-wrap: wrap;
 }
 
+/* Parking summary dashboard */
+.dashboard {
+  padding: 2rem 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.dashboard-heading {
+  font-size: 1.5rem;
+  color: #1a2e5a;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-loading, .dashboard-empty {
+  color: #555;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.dashboard-error {
+  color: #d32f2f;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-error p {
+  margin-bottom: 1rem;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.summary-card {
+  background-color: #f4f5f7;
+  padding: 1.5rem 1rem;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e0e3e8;
+}
+
+.summary-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0e918c;
+  margin-bottom: 0.5rem;
+}
+
+.summary-label {
+  font-size: 0.9rem;
+  color: #444;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-action {
+  margin-top: 1rem;
+}
+
 /* Features section */
 .features {
   padding: 2rem 0;
@@ -103,6 +171,10 @@
   .features-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* Responsive: mobile */
@@ -116,6 +188,10 @@
   }
 
   .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-grid {
     grid-template-columns: 1fr;
   }
 }
