@@ -64,8 +64,8 @@ function HomePage() {
           <Link to="/parking" className="btn btn-primary">
             Check Parking
           </Link>
-          <Link to="/predict" className="btn btn-secondary">
-            Predict Availability
+          <Link to="/report" className="btn btn-secondary">
+            Report Availability
           </Link>
         </div>
       </section>
@@ -129,7 +129,12 @@ function HomePage() {
 
         <div className="features-grid">
           <article className="feature-card">
-            <span className="feature-icon" aria-hidden="true">🅿️</span>
+            <div className="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#0e918c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+                <path d="M9 17V7h4a3 3 0 0 1 0 6H9"></path>
+              </svg>
+            </div>
             <h3>Check Parking Spaces</h3>
             <p>
               View the latest community-reported availability for parking areas
@@ -138,7 +143,12 @@ function HomePage() {
           </article>
 
           <article className="feature-card">
-            <span className="feature-icon" aria-hidden="true">📢</span>
+            <div className="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#f6a623" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+              </svg>
+            </div>
             <h3>Share Availability</h3>
             <p>
               Help fellow drivers by reporting whether a parking area is full,
@@ -147,11 +157,15 @@ function HomePage() {
           </article>
 
           <article className="feature-card">
-            <span className="feature-icon" aria-hidden="true">📊</span>
-            <h3>Predict Busy Times</h3>
+            <div className="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#1a2e5a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+              </svg>
+            </div>
+            <h3>Filter &amp; Sort</h3>
             <p>
-              See simple historical pattern estimates to plan your trip at less
-              congested times.
+              Instantly filter by availability status and sort by latest updates
+              or highest number of free spaces.
             </p>
           </article>
         </div>
