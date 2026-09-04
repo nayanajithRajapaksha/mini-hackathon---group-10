@@ -2,7 +2,19 @@ const express = require('express');
 const router = express.Router();
 const ParkingArea = require('../models/ParkingArea');
 const ParkingUpdate = require('../models/ParkingUpdate');
+const User = require('../models/User');
 const { protect, authorizeRoles } = require('../middleware/authMiddleware');
+
+async function validateWorkerAssignment(assignedWorkers = [], excludedAreaId = null) {
+  if (assignedWorkers.length > 1) return 'Only one worker can be assigned to a parking area';
+  if (!assignedWorkers.length) return null;
+  const worker = await User.findOne({ _id: assignedWorkers[0], role: 'worker' });
+  if (!worker) return 'The selected account is not a valid worker';
+  const query = { assignedWorkers: worker._id };
+  if (excludedAreaId) query._id = { $ne: excludedAreaId };
+  if (await ParkingArea.exists(query)) return `${worker.name || worker.email} is already assigned to another parking area`;
+  return null;
+}
 
 // @desc    Get all parking areas
 // @route   GET /api/parking-areas
@@ -26,6 +38,8 @@ router.post('/parking-areas', protect, authorizeRoles('admin'), async (req, res)
     if (!name || !location || totalSpaces === undefined || availableSpaces === undefined) {
       return res.status(400).json({ status: 'error', message: 'All parking area fields are required' });
     }
+    const assignmentError = await validateWorkerAssignment(assignedWorkers);
+    if (assignmentError) return res.status(400).json({ status: 'error', message: assignmentError });
     const area = await ParkingArea.create({ name, location, totalSpaces, availableSpaces, assignedWorkers });
     res.status(201).json({ status: 'success', data: area });
   } catch (error) {
@@ -37,6 +51,10 @@ router.put('/parking-areas/:id', protect, authorizeRoles('admin', 'worker'), asy
   try {
     const area = await ParkingArea.findById(req.params.id);
     if (!area) return res.status(404).json({ status: 'error', message: 'Parking area not found' });
+    if (req.user.role === 'admin' && req.body.assignedWorkers !== undefined) {
+      const assignmentError = await validateWorkerAssignment(req.body.assignedWorkers, area._id);
+      if (assignmentError) return res.status(400).json({ status: 'error', message: assignmentError });
+    }
     
     if (req.user.role === 'worker' && !area.assignedWorkers.some(id => id.equals(req.user._id))) {
       return res.status(403).json({ status: 'error', message: 'You are not assigned to this parking area' });

@@ -29,7 +29,7 @@ const seedData = async () => {
     // 2. Seed Parking Areas
     await ParkingArea.create([
       { parkingId: 'P001', name: 'KCC Main Parking', location: 'Dalada Veediya, Kandy', totalSpaces: 100, availableSpaces: 20, assignedWorkers: [users[1]._id] },
-      { parkingId: 'P002', name: 'Bogambara Public Parking', location: 'Bogambara, Kandy', totalSpaces: 200, availableSpaces: 150, assignedWorkers: [users[1]._id] },
+      { parkingId: 'P002', name: 'Bogambara Public Parking', location: 'Bogambara, Kandy', totalSpaces: 200, availableSpaces: 150 },
       { parkingId: 'P003', name: 'Lake Round Street Parking', location: 'Lake Round, Kandy', totalSpaces: 50, availableSpaces: 2 },
       { parkingId: 'P004', name: 'Getambe Temple Parking', location: 'Getambe, Peradeniya Road', totalSpaces: 80, availableSpaces: 15 },
     ]);

@@ -45,6 +45,9 @@ const parkingAreaSchema = new mongoose.Schema({
 
 // Middleware to automatically update status based on available spaces
 parkingAreaSchema.pre('save', function () {
+  if (this.assignedWorkers.length > 1) {
+    throw new Error('Only one worker can be assigned to a parking area');
+  }
   if (this.totalSpaces < 1 || this.availableSpaces > this.totalSpaces) {
     throw new Error('Available spaces must be between 0 and total spaces');
   }

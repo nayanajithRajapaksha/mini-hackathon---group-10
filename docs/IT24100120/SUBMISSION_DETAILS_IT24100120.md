@@ -39,6 +39,9 @@ Key contributions I completed:
 14. **Named Worker Assignment**: Extended user management with full names, displayed worker names and emails in the assignment dropdown, and improved worker reporting with assigned-area guidance and capacity validation.
 15. **Worker Login Reliability**: Diagnosed missing worker data in MongoDB and added a non-destructive development bootstrap for the documented worker credentials while retaining administrator-controlled account creation in production.
 16. **Secure Conflict Resolution**: Resolved the WorkerDashboard integration conflict while preserving assigned-area CRUD behavior, signed JWT authentication, and bcrypt password hashing.
+17. **Paired Parking Dropdowns**: Replaced free-text parking names and locations with synchronized Kandy-area dropdowns to prevent invalid name-location combinations.
+18. **Separate Area Workflows and Exclusive Assignment**: Added dedicated administrator forms for selecting and updating an existing area and creating a custom new area, with backend-enforced one-worker-to-one-parking assignment.
+19. **Parking Data Bootstrap and Clear Empty State**: Added non-destructive default parking creation for an empty database and replaced confusing disabled update controls with selection guidance.
 
 ## Validation
 
